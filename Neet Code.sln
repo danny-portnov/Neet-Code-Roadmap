@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.9.34728.123
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Binary Search", "Neet Code\Binary Search.csproj", "{B9257C6B-967A-407D-B98D-0E30E64B0843}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Binary Search", "Neet Code\Binary Search.csproj", "{B9257C6B-967A-407D-B98D-0E30E64B0843}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Combination Sum II", "Combination Sum II\Combination Sum II.csproj", "{7C60483C-47D1-465B-9DC2-FA91BA83C40A}"
 EndProject
@@ -17,7 +17,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Encode and Decode Strings",
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Linked List", "Linked List\Linked List.csproj", "{9BE97224-463B-4DF1-8B22-41EF1E78C0DC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sliding Windows", "Sliding Windows\Sliding Windows.csproj", "{D302D1C9-41D7-4FD9-A1F1-80984FBA5D28}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sliding Window", "Sliding Windows\Sliding Window.csproj", "{D302D1C9-41D7-4FD9-A1F1-80984FBA5D28}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Stack", "Stack\Stack.csproj", "{3C5BBE13-3FCD-47EF-BCAB-23EB0E4F50ED}"
 EndProject
