@@ -29,6 +29,54 @@ Console.WriteLine(SearchInRotated([5, 1, 2, 3, 4], 3)); //3
 Console.WriteLine(SearchInRotated([3, 1], 1)); //1
 Console.WriteLine(SearchInRotated([3, 1], 3)); //0
 
+TimeMap timeMap = new();
+//timeMap.Set("alice", "happy", 1); // store the key "alice" and value "happy" along with timestamp = 1.
+//Console.WriteLine(timeMap.Get("alice", 1));                // return "happy"
+//Console.WriteLine(timeMap.Get("alice", 2));                // return "happy", there is no value stored for timestamp 2, thus we return the value at timestamp 1.
+//timeMap.Set("alice", "sad", 3);   // store the key "alice" and value "sad" along with timestamp = 3.
+//Console.WriteLine(timeMap.Get("alice", 3));                // return "sad"
+
+//// Overwriting with new timestamp
+//Console.WriteLine(timeMap.Get("alice", 3)); // "sad"
+//Console.WriteLine(timeMap.Get("alice", 2)); // "happy"
+//Console.WriteLine(timeMap.Get("alice", 4)); // "sad"
+
+//// Different key
+//timeMap.Set("bob", "excited", 2);
+//Console.WriteLine(timeMap.Get("bob", 1)); // "" (nothing <= 1)
+//Console.WriteLine(timeMap.Get("bob", 2)); // "excited"
+//Console.WriteLine(timeMap.Get("bob", 3)); // "excited"
+
+//// Multiple sets for same key
+//timeMap.Set("alice", "angry", 5);
+//timeMap.Set("alice", "tired", 10);
+//Console.WriteLine(timeMap.Get("alice", 5));  // "angry"
+//Console.WriteLine(timeMap.Get("alice", 6));  // "angry"
+//Console.WriteLine(timeMap.Get("alice", 10)); // "tired"
+//Console.WriteLine(timeMap.Get("alice", 100)); // "tired"
+
+//// No such key
+//Console.WriteLine(timeMap.Get("charlie", 1)); // ""
+
+//// Get before any set
+//Console.WriteLine(timeMap.Get("alice", 0)); // ""
+
+timeMap.Set("love", "high", 10);
+timeMap.Set("love", "low", 20);
+
+Console.WriteLine(timeMap.Get("love", 5));   // Expect: ""
+Console.WriteLine(timeMap.Get("love", 10));  // Expect: "high"
+Console.WriteLine(timeMap.Get("love", 15));  // Expect: "high"
+Console.WriteLine(timeMap.Get("love", 20));  // Expect: "low"
+Console.WriteLine(timeMap.Get("love", 25));  // Expect: "low"
+
+
+//// Multiple close timestamps
+//timeMap.Set("dave", "v1", 5);
+//timeMap.Set("dave", "v2", 6);
+//timeMap.Set("dave", "v3", 7);
+//Console.WriteLine(timeMap.Get("dave", 6)); // "v2"
+//Console.WriteLine(timeMap.Get("dave", 8)); // "v3"
 public static class Solution
 {
     public static int Search(int[] nums, int target)
@@ -161,5 +209,61 @@ public static class Solution
             }
         }
         return -1;
+    }
+}
+
+public class TimeMap
+{
+    public class Value(string valueName, List<int> timestamps)
+    {
+        public string Name = valueName;
+        public List<int> Timestamps = timestamps;
+    }
+
+    //Dictionary<string, Value> dict;
+    Dictionary<string, List<int>> keyToTimestamps = [];
+    Dictionary<int, string> timestampToValue = [];
+    public void Set(string key, string value, int timestamp)
+    {
+        if (keyToTimestamps.TryGetValue(key, out List<int>? val))
+        {
+            val.Add(timestamp);
+        }
+        else
+        {
+            keyToTimestamps.Add(key, [timestamp]);
+        }
+        timestampToValue.Add(timestamp, value);
+    }
+
+    public string Get(string key, int timestamp)
+    {
+        if (keyToTimestamps.TryGetValue(key, out List<int>? val))
+        {
+            int low = 0, high = val.Count - 1, result = -1;
+            while (low <= high)
+            {
+                int mid = (low + high) / 2;
+                if (val[mid] == timestamp)
+                {
+                    result = mid;
+                    break;
+                }
+                if (val[mid] > timestamp)
+                {
+                    high = mid - 1;
+                }
+                else
+                {
+                    result = mid;
+                    low = mid + 1;
+                }
+            }
+            if (result != -1)
+            {
+                return timestampToValue[val[result]];
+            }
+        }
+        return string.Empty;
     }
 }
