@@ -1,5 +1,4 @@
-﻿using System.Diagnostics;
-using static Solution;
+﻿using static Solution;
 
 //Console.WriteLine(MaxProfit([7, 1, 5, 3, 6, 4])); // 5
 //Console.WriteLine(MaxProfit([7, 6, 4, 3, 1])); // 0
@@ -29,20 +28,23 @@ public static class Solution
 
     public static int LengthOfLongestSubstring(string s)
     {
-        Dictionary<char, int> letters = [];
-        int max = 0, left = 0;
+        Dictionary<char, int> letters = []; //maps char to last occurance (index)
+        int max = 0, left = 0, count = 0;
         for (int right = 0; right < s.Length; right++)
         {
-            if (letters.TryGetValue(s[right], out int value))
+            // If a char appeared previously, AND it's within the window
+            if (letters.TryGetValue(s[right], out int lastOccurance)
+                && left <= lastOccurance)
             {
-                right = value + 1;
+                left = lastOccurance + 1; // Reduce the window from the left to skip the char
+                count = right - lastOccurance; // Update count
             }
-            else
+            else // unique char OR duplicate is outside the window
             {
                 count++;
             }
             max = Math.Max(max, count);
-            letters.Add(s[right], right);
+            letters[s[right]] = right; // override if a new occurance appeared
         }
         return max;
     }
