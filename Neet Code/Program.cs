@@ -70,7 +70,9 @@ Console.WriteLine(timeMap.Get("love", 15));  // Expect: "high"
 Console.WriteLine(timeMap.Get("love", 20));  // Expect: "low"
 Console.WriteLine(timeMap.Get("love", 25));  // Expect: "low"
 
-
+Console.WriteLine(FindMedianSortedArrays([1, 2, 3, 4, 5],[1, 2, 3, 4, 5, 6, 7, 8])); // 4
+Console.WriteLine(FindMedianSortedArrays([1, 3], [2]));
+Console.WriteLine(FindMedianSortedArrays([1, 2], [3,4]));
 //// Multiple close timestamps
 //timeMap.Set("dave", "v1", 5);
 //timeMap.Set("dave", "v2", 6);
@@ -209,6 +211,50 @@ public static class Solution
             }
         }
         return -1;
+    }
+    /// <summary>
+    /// DOES NOT WORK
+    /// </summary>
+    /// <param name="bigger"></param>
+    /// <param name="smaller"></param>
+    /// <returns></returns>
+    public static double FindMedianSortedArrays(int[] bigger, int[] smaller)
+    {
+        if (bigger.Length < smaller.Length)
+        {
+            return FindMedianSortedArrays(smaller, bigger); //swap if not in correct order
+        }
+        int totalLength = bigger.Length + smaller.Length;
+        int half = smaller.Length / 2;
+        int low = 0, high = smaller.Length - 1;
+        while (true)
+        {
+            int small = (low + high) / 2; // Pointer to smaller array
+            int big = Math.Max(half - small, 0); // Pointer to larger array
+            (int smallLeft, int smallRight) = GetCurrentAndBefore(smaller, small);
+            (int bigLeft, int bigRight) = GetCurrentAndBefore(bigger, big);
+            if (bigLeft <= smallRight && bigRight >= smallLeft)
+            {
+                return (Math.Max(smallLeft, bigLeft) + Math.Min(smallRight, bigRight)) / 2.0;
+            }
+            if (bigLeft <= smallRight)
+            {
+                low = small + 1;
+            }
+            else
+            {
+                high = small - 1;
+            }
+        }
+
+        static int GetBeforeIndex(int[] arr, int index) 
+            => index > 0 ? arr[index - 1] : int.MinValue;
+
+        static int GetAtIndex(int[] arr, int index) 
+            => index < arr.Length ? arr[index] : int.MaxValue;
+
+        static (int,int) GetCurrentAndBefore(int[] arr, int index)
+            => (GetBeforeIndex(arr, index),GetAtIndex(arr, index));
     }
 }
 
