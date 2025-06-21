@@ -26,6 +26,8 @@ Console.WriteLine(SearchInRotated([17, 11, 13, 15], 11)); //1
 Console.WriteLine(SearchInRotated([11, 13, 15, 17], 11)); //0
 Console.WriteLine(SearchInRotated([4, 5, 1, 2, 3], 1)); //2
 Console.WriteLine(SearchInRotated([5, 1, 2, 3, 4], 3)); //3
+Console.WriteLine(SearchInRotated([3, 1], 1)); //1
+Console.WriteLine(SearchInRotated([3, 1], 3)); //0
 
 public static class Solution
 {
@@ -130,7 +132,7 @@ public static class Solution
             {
                 return mid;
             }
-            if (nums[low] >= nums[mid]) // Mid is on the right half
+            if (nums[low] > nums[mid]) // Mid is on the right half (not equal because if they're equal, mid is on the left).
             {
                 // We need to move to the left half, if....
                 // Target on the left (less then mid) or target is on the left half (higher than high) 
