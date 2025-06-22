@@ -100,38 +100,25 @@ public static class Solution
     /// <returns></returns>
     public static bool CheckInclusion(string shortStr, string longStr)
     {
-        Dictionary<char, int> shortStrHist = [];
-        Dictionary<char, int> longStrLetters = [];
-        HashSet<char> shortStrSet = [.. shortStr];
-        int left = 0, count = shortStrHist.Values.Sum();
+        int[] longStrHist = new int[26];
+        int[] shortStrHist = new int[26];
+        foreach (char letter in shortStr)
+        {
+            shortStrHist[letter - 'a']++;
+        }
         for (int right = 0; right < longStr.Length; right++)
         {
             char currentChar = longStr[right];
-            if (shortStrSet.Contains(currentChar))
+            int idx = currentChar - 'a';
+            longStrHist[idx]++;
+            if (right > shortStr.Length - 1) // update hist to fit window
             {
-                shortStrHist[currentChar] = shortStrHist.TryGetValue(currentChar, out int val)
-                    ? ++val : 1;
+                longStrHist[longStr[right - shortStr.Length] - 'a']--;
             }
-            if (shortStrHist.TryGetValue(currentChar, out int value)
-                && value > 0)
+            if (shortStrHist.SequenceEqual(longStrHist))
             {
-                shortStrHist[currentChar] = --value;
-                if (count == right - left + 1)
-                {
-                    return true; 
-                }
+                return true;
             }
-            else
-            {
-
-                left = longStrLetters.TryGetValue(currentChar, out int lastOccurance)
-                    && left <= lastOccurance
-                    ? lastOccurance + 1
-                    : right + 1;
-                //shortStrHist = histCopy;
-                //count = right - lastOccurance; // Update count
-            }
-            longStrLetters[currentChar] = right;
         }
         return false;
     }
