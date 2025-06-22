@@ -24,6 +24,14 @@ Console.WriteLine(CharacterReplacement("ABABBA", 2));     //5
 Console.WriteLine(CharacterReplacement("AABABBA", 1));  //4
 Console.WriteLine(CharacterReplacement("AAAB", 0));  //3
 Console.WriteLine(CharacterReplacement("ABAA", 0));  //2
+
+Console.WriteLine("CheckInclusion");
+Console.WriteLine(CheckInclusion("abc", "lecabee"));  //true
+Console.WriteLine(CheckInclusion("abc", "lecaabee"));  //false
+Console.WriteLine(CheckInclusion("ab", "eidbaooo"));  //true
+Console.WriteLine(CheckInclusion("ab", "eidboaoo"));  //false
+Console.WriteLine(CheckInclusion("adc", "dcda"));  //true
+
 public static class Solution
 {
     public static int MaxProfit(int[] prices)
@@ -60,11 +68,6 @@ public static class Solution
         return max;
     }
 
-    public class CharData
-    {
-        public int Count;
-        //public int 
-    }
     public static int CharacterReplacement(string s, int k)
     {
         int[] counts = new int[26];
@@ -86,5 +89,50 @@ public static class Solution
         }
 
         return maxLength;
+    }
+
+    /// <summary>
+    /// Return <see langword="true"/> if <paramref name="longStr"/> 
+    /// contains a permutation of <paramref name="shortStr"/>, or <see langword="false"/> otherwise.
+    /// </summary>
+    /// <param name="shortStr"></param>
+    /// <param name="longStr"></param>
+    /// <returns></returns>
+    public static bool CheckInclusion(string shortStr, string longStr)
+    {
+        Dictionary<char, int> shortStrHist = [];
+        Dictionary<char, int> longStrLetters = [];
+        HashSet<char> shortStrSet = [.. shortStr];
+        int left = 0, count = shortStrHist.Values.Sum();
+        for (int right = 0; right < longStr.Length; right++)
+        {
+            char currentChar = longStr[right];
+            if (shortStrSet.Contains(currentChar))
+            {
+                shortStrHist[currentChar] = shortStrHist.TryGetValue(currentChar, out int val)
+                    ? ++val : 1;
+            }
+            if (shortStrHist.TryGetValue(currentChar, out int value)
+                && value > 0)
+            {
+                shortStrHist[currentChar] = --value;
+                if (count == right - left + 1)
+                {
+                    return true; 
+                }
+            }
+            else
+            {
+
+                left = longStrLetters.TryGetValue(currentChar, out int lastOccurance)
+                    && left <= lastOccurance
+                    ? lastOccurance + 1
+                    : right + 1;
+                //shortStrHist = histCopy;
+                //count = right - lastOccurance; // Update count
+            }
+            longStrLetters[currentChar] = right;
+        }
+        return false;
     }
 }
