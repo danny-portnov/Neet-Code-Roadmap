@@ -20,8 +20,10 @@ Console.WriteLine(LengthOfLongestSubstring("tmmzuxt")); //5
 Console.WriteLine("CharacterReplacement");
 Console.WriteLine(CharacterReplacement("ABAB", 2));     //4
 Console.WriteLine(CharacterReplacement("ABAB", 0));     //1
+Console.WriteLine(CharacterReplacement("ABABBA", 2));     //5
 Console.WriteLine(CharacterReplacement("AABABBA", 1));  //4
 Console.WriteLine(CharacterReplacement("AAAB", 0));  //3
+Console.WriteLine(CharacterReplacement("ABAA", 0));  //2
 public static class Solution
 {
     public static int MaxProfit(int[] prices)
@@ -65,35 +67,24 @@ public static class Solution
     }
     public static int CharacterReplacement(string s, int k)
     {
-        Dictionary<char, int> result = s.GroupBy(x => x)
-            .ToDictionary(x => x.Key, x => x.Count());
-        int max = result.Values.Max();
-        char mostFrequent = result.Where(x => x.Value == max).Select(x => x.Key).First();
-        Dictionary<char, int> charCount = [];
-        int maxCount = 0, left = 0, count = 0, originalK = k; // k is window length ?
-        bool startCounting = false;
+        int[] counts = new int[26];
+        int maxFreq = 0, left = 0, maxLength = 0;
+
         for (int right = 0; right < s.Length; right++)
         {
-            if (s[right] != mostFrequent && k == 0)
+            int idx = s[right] - 'A';
+            counts[idx]++;
+            maxFreq = Math.Max(maxFreq, counts[idx]);
+
+            while (right - left + 1 - maxFreq > k)
             {
-                //left = charCount[s[right]] + 1; // Reduce the window from the left to skip the char
-                count = charCount.TryGetValue(s[right], out int value) ? right - value : 0;
-                startCounting = false;
-                k = originalK;
+                counts[s[left] - 'A']--;
+                left++;
             }
-            if (s[right] == mostFrequent
-                || startCounting) // begin/resume counting the most frequent 
-            {
-                count++;
-                startCounting = true;
-                if (s[right] != mostFrequent)
-                {
-                    k--; 
-                }
-            }
-            maxCount = Math.Max(maxCount, count);
-            charCount[s[right]] = right;
+
+            maxLength = Math.Max(maxLength, right - left + 1);
         }
-        return maxCount;
+
+        return maxLength;
     }
 }
