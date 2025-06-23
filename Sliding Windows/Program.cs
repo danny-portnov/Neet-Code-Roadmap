@@ -1,4 +1,5 @@
-﻿using static Solution;
+﻿using System.Text.RegularExpressions;
+using static Solution;
 
 
 Console.WriteLine("MaxProfit");
@@ -32,8 +33,16 @@ Console.WriteLine(CheckInclusion("ab", "eidbaooo"));  //true
 Console.WriteLine(CheckInclusion("ab", "eidboaoo"));  //false
 Console.WriteLine(CheckInclusion("adc", "dcda"));  //true
 Console.WriteLine(CheckInclusion("abc", "bbbca"));  //true
+
+Console.WriteLine("MinWindow");
+Console.WriteLine(MinWindow("ADOBECODEBANC", "ABC"));  //BANC
+Console.WriteLine(MinWindow("a", "a"));  //a
+Console.WriteLine($"\"{MinWindow("a", "aa")}\"");  //""
+Console.WriteLine(MinWindow("OUZODYXAZV", "XYZ"));  //YXAZ
 public static class Solution
 {
+    private const int HistogramLength = 26;
+
     public static int MaxProfit(int[] prices)
     {
         int minPrice = prices[0], profit = 0;
@@ -70,7 +79,7 @@ public static class Solution
 
     public static int CharacterReplacement(string s, int k)
     {
-        int[] counts = new int[26];
+        int[] counts = new int[HistogramLength];
         int maxFreq = 0, left = 0, maxLength = 0;
 
         for (int right = 0; right < s.Length; right++)
@@ -100,7 +109,7 @@ public static class Solution
     /// <returns></returns>
     public static bool CheckInclusion(string shortStr, string longStr)
     {
-        int[] longStrHist = new int[26], shortStrHist = new int[longStrHist.Length]; 
+        int[] longStrHist = new int[HistogramLength], shortStrHist = new int[longStrHist.Length]; 
         foreach (char letter in shortStr)
         {
             shortStrHist[letter - 'a']++;
@@ -142,7 +151,36 @@ public static class Solution
 
     public static string MinWindow(string longStr, string shortStr)
     {
-
-        return "";
+        Dictionary<char, int> shortStrHist = shortStr.GroupBy(c => c)
+            .ToDictionary(g => g.Key, g => g.Count());
+        Dictionary<char, int> longStrHist = [];
+        int left = 0, count = 0, sum = shortStrHist.Values.Count(v => v!=0);
+        string min = "";
+        for (int right = 0; right < longStr.Length; right++)
+        {
+            char currentChar = longStr[right];
+            longStrHist[currentChar] = longStrHist.GetValueOrDefault(currentChar) + 1;
+            if (shortStrHist.TryGetValue(currentChar, out int value) 
+                && longStrHist[currentChar] == value)
+            {
+                count++;
+            }
+            while (count == sum)
+            {
+                if (min == "" || right - left + 1 < min.Length)
+                {
+                    min = longStr[left..(right + 1)];
+                }
+                char leftChar = longStr[left];
+                longStrHist[leftChar]--;
+                if (shortStrHist.TryGetValue(leftChar, out value)
+                        && longStrHist[leftChar] < value)
+                {
+                    count--;
+                }
+                left++;
+            }
+        }
+        return min;
     }
 }
