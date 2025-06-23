@@ -31,7 +31,7 @@ Console.WriteLine(CheckInclusion("abc", "lecaabee"));  //false
 Console.WriteLine(CheckInclusion("ab", "eidbaooo"));  //true
 Console.WriteLine(CheckInclusion("ab", "eidboaoo"));  //false
 Console.WriteLine(CheckInclusion("adc", "dcda"));  //true
-
+Console.WriteLine(CheckInclusion("abc", "bbbca"));  //true
 public static class Solution
 {
     public static int MaxProfit(int[] prices)
@@ -100,26 +100,49 @@ public static class Solution
     /// <returns></returns>
     public static bool CheckInclusion(string shortStr, string longStr)
     {
-        int[] longStrHist = new int[26];
-        int[] shortStrHist = new int[26];
+        int[] longStrHist = new int[26], shortStrHist = new int[longStrHist.Length]; 
         foreach (char letter in shortStr)
         {
             shortStrHist[letter - 'a']++;
         }
+        int matches = longStrHist.Zip(shortStrHist).Where(x => x.First == x.Second).Count();
         for (int right = 0; right < longStr.Length; right++)
         {
             char currentChar = longStr[right];
             int idx = currentChar - 'a';
             longStrHist[idx]++;
+            if (shortStrHist[idx] == longStrHist[idx])
+            {
+                matches++;
+            }
+            else if (shortStrHist[idx] + 1 == longStrHist[idx])
+            {
+                matches--;
+            }
             if (right > shortStr.Length - 1) // update hist to fit window
             {
-                longStrHist[longStr[right - shortStr.Length] - 'a']--;
+                idx = longStr[right - shortStr.Length] - 'a';
+                longStrHist[idx]--;
+                if (shortStrHist[idx] == longStrHist[idx])
+                {
+                    matches++;
+                }
+                else if (shortStrHist[idx] - 1 == longStrHist[idx])
+                {
+                    matches--;
+                }
             }
-            if (shortStrHist.SequenceEqual(longStrHist))
+            if (matches == longStrHist.Length)
             {
                 return true;
             }
         }
         return false;
+    }
+
+    public static string MinWindow(string longStr, string shortStr)
+    {
+
+        return "";
     }
 }
