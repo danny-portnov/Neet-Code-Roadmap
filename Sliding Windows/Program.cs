@@ -154,8 +154,8 @@ public static class Solution
         Dictionary<char, int> shortStrHist = shortStr.GroupBy(c => c)
             .ToDictionary(g => g.Key, g => g.Count());
         Dictionary<char, int> longStrHist = [];
-        int left = 0, count = 0, sum = shortStrHist.Values.Count(v => v!=0);
-        string min = "";
+        int left = 0, count = 0, sum = shortStrHist.Count;
+        int? resultStart = default, resultLength = default;
         for (int right = 0; right < longStr.Length; right++)
         {
             char currentChar = longStr[right];
@@ -167,9 +167,10 @@ public static class Solution
             }
             while (count == sum)
             {
-                if (min == "" || right - left + 1 < min.Length)
+                if (!resultStart.HasValue || right - left + 1 < resultLength)
                 {
-                    min = longStr[left..(right + 1)];
+                    resultStart = left;
+                    resultLength = right - left + 1;
                 }
                 char leftChar = longStr[left];
                 longStrHist[leftChar]--;
@@ -181,6 +182,6 @@ public static class Solution
                 left++;
             }
         }
-        return min;
+        return resultStart.HasValue ? longStr.Substring(resultStart.Value, resultLength.Value) : "";
     }
 }
