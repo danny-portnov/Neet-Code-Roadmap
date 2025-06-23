@@ -3,66 +3,64 @@ using System.Data;
 using System.Linq;
 using static Solution;
 using static Extension;
-using static System.Net.Mime.MediaTypeNames;
-using System.Runtime.InteropServices;
 
-//PrintListNode(ReverseList(new([1, 2, 3, 4, 5])));
-//PrintListNode(ReverseList(new([1, 2, 3])));
-//PrintListNode(ReverseList(new([1])));
-//PrintListNode(MergeTwoLists(new([1, 2, 4]), new([1, 3, 4])));
-//PrintListNode(MergeTwoLists(new([1]), new([1])));
-//PrintListNode(MergeTwoLists(null, new([1])));
-//PrintListNode(MergeTwoLists(null, null));
-PrintListNode(ReorderList(new([1, 2, 3, 4])));
-PrintListNode(ReorderList(new([1, 2, 3, 4, 5])));
-PrintListNode(ReorderList(new([1])));
-PrintListNode(ReorderList(new([1, 2, 3, 4, 5, 6, 7])));
+Console.WriteLine("ReverseList");
+PrintListNode(ReverseList([1, 2, 3, 4, 5]));
+PrintListNode(ReverseList([1, 2, 3]));
+PrintListNode(ReverseList([1]));
+
+Console.WriteLine("MergeTwoLists");
+PrintListNode(MergeTwoLists([1, 2, 4], [1, 3,5]));
+PrintListNode(MergeTwoLists([1], [1]));
+PrintListNode(MergeTwoLists([], [1]));
+PrintListNode(MergeTwoLists([], []));
+//PrintListNode(ReorderList(new([1, 2, 3, 4])));
+//PrintListNode(ReorderList(new([1, 2, 3, 4, 5])));
+//PrintListNode(ReorderList(new([1])));
+//PrintListNode(ReorderList(new([1, 2, 3, 4, 5, 6, 7])));
 
 public static class Solution
 {
     public class ListNode
     {
-        public int val;
-        public ListNode? next;
+        public int Value;
+        public ListNode? Next;
 
-        public ListNode(int val = 0, ListNode? next = null)
+        public ListNode(int[] nums = default)
         {
-            this.val = val;
-            this.next = next;
+            Value = nums?.ElementAt(0) ?? 0;
+            Next = (nums?.Length ?? 0) > 1
+                ? new ListNode(nums[1..])
+                : null;
         }
 
-        public ListNode(int[] nums)
-        {
-            val = nums[0];
-            next = nums.Length == 1
-                ? null
-                : new ListNode(nums[1..]);
-        }
-
-        public override string ToString() => val.ToString();
+        public override string ToString() => Value.ToString();
     }
 
     public static ListNode ReverseList(ListNode head)
     {
-        ListNode prev = null;
+        ListNode? prev = null;
         while (head != null)
         {
-            ListNode next = head.next;
-            head.next = prev;
+            ListNode? next = head?.Next;
+            head.Next = prev;
             prev = head;
             head = next;
         }
         return prev;
     }
 
+    public static ListNode ReverseList(int[] nums)
+        => ReverseList(new ListNode(nums));
+
     public static bool HasCycle(ListNode head)
     {
         ListNode tort = head;
         ListNode hare = head;
-        while (hare != null && hare.next != null)
+        while (hare != null && hare.Next != null)
         {
-            tort = tort.next;
-            hare = hare.next.next;
+            tort = tort.Next;
+            hare = hare.Next.Next;
             if (tort == hare) return true;
         }
         return false;
@@ -70,12 +68,12 @@ public static class Solution
 
     public static ListNode ReorderListOnSpace(ListNode head)
     {
-        if (head.next == null) return head;
+        if (head.Next == null) return head;
         List<ListNode> nodes = [];
         for (int i = 0; head != null; i++)
         {
             nodes.Add(head);
-            head = head.next;
+            head = head.Next;
         }
         head = nodes[0];
         int end = nodes.Count - 1;
@@ -84,8 +82,8 @@ public static class Solution
         bool chooseStart = true;
         while (end >= start)
         {
-            head.next = nodes[pos];
-            head = head.next;
+            head.Next = nodes[pos];
+            head = head.Next;
 
             if (chooseStart)
             {
@@ -99,17 +97,17 @@ public static class Solution
             }
             chooseStart = !chooseStart;
         }
-        head.next = null;
+        head.Next = null;
         return nodes[0];
     }
 
     public static ListNode ReorderList(ListNode head)
     {
         ListNode tort = head, hare = head, result = head;
-        while (hare != null && hare.next != null)
+        while (hare != null && hare.Next != null)
         {
-            tort = tort.next;
-            hare = hare.next.next;
+            tort = tort.Next;
+            hare = hare.Next.Next;
         }
         ListNode middle = tort;
         ListNode reversed = ReverseList(middle);
@@ -117,38 +115,42 @@ public static class Solution
         {
             if (i % 2 == 0)
             {
-                result.next = reversed;
-                reversed = reversed?.next;
+                result.Next = reversed;
+                reversed = reversed?.Next;
             }
             else
             {
-                result.next = middle;
-                middle = middle?.next;
+                result.Next = middle;
+                middle = middle?.Next;
             }
-            result = result.next;
+            result = result.Next;
         }
         return head;
     }
-    public static ListNode MergeTwoLists(ListNode list1, ListNode list2)
+
+    public static ListNode? MergeTwoLists(int[] list1, int[] list2)
+        => MergeTwoLists(list1.Length > 0 ? new ListNode(list1) : null,
+            list2?.Length > 0 ? new ListNode(list2) : null);
+    public static ListNode? MergeTwoLists(ListNode? list1, ListNode? list2)
     {
         ListNode result = new();
         ListNode head = result;
         while (list1 != null && list2 != null)
         {
-            if (list1.val > list2.val)
+            if (list1.Value < list2.Value)
             {
-                result.next = list2;
-                list2 = list2.next;
+                result.Next = list1;
+                list1 = list1.Next;
             }
             else
             {
-                result.next = list1;
-                list1 = list1.next;
+                result.Next = list2;
+                list2 = list2.Next;
             }
-            result = result.next;
+            result = result.Next;
         }
-        result.next = list1 ?? list2;
-        return head.next;
+        result.Next = list2 ?? list1;
+        return head.Next;
     }
 }
 
@@ -158,13 +160,13 @@ public static class Extension
     public static void Print<T>(IEnumerable<T> values)
         => Console.WriteLine($"[{string.Join(",", values)}]");
 
-    public static void PrintListNode(ListNode l1)
+    public static void PrintListNode(ListNode? l1)
     {
-        Console.Write($"[{l1?.val}");
-        while (l1?.next != null)
+        Console.Write($"[{l1?.Value}");
+        while (l1?.Next != null)
         {
-            l1 = l1.next;
-            Console.Write($",{l1.val}");
+            l1 = l1.Next;
+            Console.Write($",{l1.Value}");
         }
         Console.Write("]");
         Console.WriteLine();
