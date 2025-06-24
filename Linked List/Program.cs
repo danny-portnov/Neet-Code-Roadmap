@@ -1,5 +1,6 @@
 ﻿using static Solution;
 using static Extension;
+using System.Reflection;
 
 Console.WriteLine("ReverseList");
 PrintListNode(ReverseList([1, 2, 3, 4, 5]));
@@ -19,10 +20,10 @@ Console.WriteLine(HasCycle([1, 2, 3, 4], -1)); // false
 
 
 Console.WriteLine("ReorderList");
-//PrintListNode(ReorderList(new([1, 2, 3, 4])));
-//PrintListNode(ReorderList(new([1, 2, 3, 4, 5])));
-//PrintListNode(ReorderList(new([1])));
-//PrintListNode(ReorderList(new([1, 2, 3, 4, 5, 6, 7])));
+PrintListNode(ReorderList([1, 2, 3, 4])); // 1,4,2,3
+PrintListNode(ReorderList([1, 2, 3, 4, 5])); // 1,5,2,4,3
+PrintListNode(ReorderList([1])); // 1
+PrintListNode(ReorderList([1, 2, 3, 4, 5, 6, 7])); // 1,7,2,6,3,5,4
 
 public static class Solution
 {
@@ -31,7 +32,7 @@ public static class Solution
         public int val;
         public ListNode? next;
 
-        private ListNode(int val = 0, ListNode? next = null)
+        public ListNode(int val = 0, ListNode? next = null)
         {
             this.val = val;
             this.next = next;
@@ -51,7 +52,7 @@ public static class Solution
         //    _count = 0;
         //}
 
-        public ListNode(int[]? values = default, int index = -1)
+        public ListNode(int[]? values, int index = -1)
         {
             values ??= [0];
             val = values[0];
@@ -147,33 +148,68 @@ public static class Solution
         return nodes[0];
     }
 
+    //public static ListNode ReorderList(ListNode head)
+    //{
+    //    ListNode tort = head, hare = head, result = head;
+    //    while (hare != null && hare.next != null)
+    //    {
+    //        tort = tort.next;
+    //        hare = hare.next.next;
+    //    }
+    //    ListNode middle = tort;
+    //    ListNode reversed = ReverseList(middle);
+    //    for (int i = 0; result != null; i++)
+    //    {
+    //        if (i % 2 == 0)
+    //        {
+    //            result.next = reversed;
+    //            reversed = reversed?.next;
+    //        }
+    //        else
+    //        {
+    //            result.next = middle;
+    //            middle = middle?.next;
+    //        }
+    //        result = result.next;
+    //    }
+    //    return head;
+    //}
+
+    public static ListNode ReorderList(int[] ints)
+        => ReorderList(new ListNode(ints));
     public static ListNode ReorderList(ListNode head)
     {
-        ListNode tort = head, hare = head, result = head;
-        while (hare != null && hare.next != null)
+        ListNode start = head, middle = head;
+        int count = 0;
+        while (head != null)
         {
-            tort = tort.next;
-            hare = hare.next.next;
+            count++;
+            head = head.next!;
         }
-        ListNode middle = tort;
-        ListNode reversed = ReverseList(middle);
-        for (int i = 0; result != null; i++)
+        int middleCount = (count - 1) / 2 + 1; // Round up
+        for (int i = 0; i < middleCount; i++)
         {
-            if (i % 2 == 0)
+            middle = middle.next!;
+        }
+        head = start;
+        ListNode rev = ReverseList(middle);
+        middle = head.next!;
+        for (int i = 0; head != null; i++)
+        {
+            if (int.IsEvenInteger(i))
             {
-                result.next = reversed;
-                reversed = reversed?.next;
+                head.next = rev;
+                rev = rev?.next!;
             }
             else
             {
-                result.next = middle;
-                middle = middle?.next;
+                head.next = middle;
+                middle = middle?.next!;
             }
-            result = result.next;
+            head = head.next;
         }
-        return head;
+        return start;
     }
-
     public static ListNode? MergeTwoLists(int[] list1, int[] list2)
         => MergeTwoLists(list1.Length > 0 ? new ListNode(list1) : null,
             list2?.Length > 0 ? new ListNode(list2) : null);
