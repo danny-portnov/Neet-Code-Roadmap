@@ -24,7 +24,6 @@ Console.WriteLine(HasCycle([1, 2, 3], -1)); // false
 Console.WriteLine(HasCycle([1, 2, 3, 4], 1)); // true
 Console.WriteLine(HasCycle([1, 2, 3, 4], -1)); // false
 
-
 Console.WriteLine("ReorderList");
 PrintListNode(ReorderList([1])); // 1
 PrintListNode(ReorderList([1, 2])); // 1, 2
@@ -32,6 +31,14 @@ PrintListNode(ReorderList([1, 2, 3])); // 1, 3, 2
 PrintListNode(ReorderList([1, 2, 3, 4])); // 1, 4, 2, 3
 PrintListNode(ReorderList([1, 2, 3, 4, 5])); // 1,5,2,4,3
 PrintListNode(ReorderList([1, 2, 3, 4, 5, 6, 7])); // 1,7,2,6,3,5,4
+
+Console.WriteLine("RemoveNthFromEnd");
+PrintListNode(RemoveNthFromEnd([1, 2, 3, 4, 5], 2)); // [1, 2, 3, 5]
+PrintListNode(RemoveNthFromEnd([1, 2, 3, 4, 5], 5)); // [2, 3, 4, 5]
+PrintListNode(RemoveNthFromEnd([1, 2, 3, 4, 5], 1)); // [1, 2, 3, 4]
+PrintListNode(RemoveNthFromEnd([1], 1)); // []
+PrintListNode(RemoveNthFromEnd([1,2], 1)); // [1]
+
 
 public static class Solution
 {
@@ -154,31 +161,52 @@ public static class Solution
         => ReorderList(new ListNode(ints));
     public static ListNode ReorderList(ListNode head)
     {
-        ListNode start = head, middle = head;
+        ListNode start = head, slow = head;
         ListNode? fast = head.next;
-        while (fast != null && fast != middle)
+        while (fast != null && fast.next != null)
         {
-            middle = middle.next!;
+            slow = slow.next!;
             fast = fast?.next?.next;
         }
+        ListNode middle = slow.next;
+        slow.next = null;  // first half ends here
         ListNode rev = ReverseList(middle);
-        middle = head!.next!;
-        for (int i = 0; head != null; i++)
+        while (rev != null)
         {
-            if (int.IsEvenInteger(i))
-            {
-                head.next = rev;
-                rev = rev?.next!;
-            }
-            else
-            {
-                head.next = middle;
-                middle = middle?.next!;
-            }
-            head = head.next;
+            ListNode tmp1 = head.next, tmp2 = rev.next;
+            head.next = rev;
+            rev.next = tmp1;
+            head = tmp1;
+            rev = tmp2;
         }
         return start;
     }
+
+    public static ListNode RemoveNthFromEnd(int[] head, int n)
+        => RemoveNthFromEnd(new ListNode(head), n);
+
+    public static ListNode? RemoveNthFromEnd(ListNode head, int n)
+    {
+        ListNode start = head;
+        int count = 0;
+        while (head!= null)
+        {
+            count++;
+            head = head.next;
+        }
+        head = start;
+        if (n == count)
+        {
+            return head.next;
+        }
+        for (int i = 0; i < count - n - 1; i++)
+        {
+            head = head.next!;
+        }
+        head!.next = head.next!.next;
+        return start;
+    }
+
     public static ListNode? MergeTwoLists(int[] list1, int[] list2)
         => MergeTwoLists(new ListNode(list1), new ListNode(list2));
     public static ListNode? MergeTwoLists(ListNode? list1, ListNode? list2)
