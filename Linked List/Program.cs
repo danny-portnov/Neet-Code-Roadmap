@@ -38,6 +38,7 @@ PrintListNode(RemoveNthFromEnd([1, 2, 3, 4, 5], 5)); // [2, 3, 4, 5]
 PrintListNode(RemoveNthFromEnd([1, 2, 3, 4, 5], 1)); // [1, 2, 3, 4]
 PrintListNode(RemoveNthFromEnd([1], 1)); // []
 PrintListNode(RemoveNthFromEnd([1,2], 1)); // [1]
+PrintListNode(RemoveNthFromEnd([1,2], 2)); // [2]
 
 
 public static class Solution
@@ -187,24 +188,19 @@ public static class Solution
 
     public static ListNode? RemoveNthFromEnd(ListNode head, int n)
     {
-        ListNode start = head;
-        int count = 0;
-        while (head!= null)
+        ListNode right = head, dummy = new(next: head), left = dummy;
+        while (n != 0)
         {
-            count++;
-            head = head.next;
+            right = right.next;
+            n--;
         }
-        head = start;
-        if (n == count)
+        while (right != null)
         {
-            return head.next;
+            left = left.next!; // Advance the dummy, not the head!
+            right = right.next;
         }
-        for (int i = 0; i < count - n - 1; i++)
-        {
-            head = head.next!;
-        }
-        head!.next = head.next!.next;
-        return start;
+        left.next = left.next!.next;
+        return dummy.next;
     }
 
     public static ListNode? MergeTwoLists(int[] list1, int[] list2)
