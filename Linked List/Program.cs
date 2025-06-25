@@ -46,6 +46,9 @@ PrintListNode(RemoveNthFromEnd([1], 1)); // []
 PrintListNode(RemoveNthFromEnd([1,2], 1)); // [1]
 PrintListNode(RemoveNthFromEnd([1,2], 2)); // [2]
 
+Console.WriteLine();
+Console.WriteLine("CopyRandomList");
+PrintListNode(CopyRandomList([[7, null], [13, 0], [11, 4], [10, 2], [1, 0]])); 
 
 public static class Solution
 {
@@ -99,7 +102,42 @@ public static class Solution
         public override string ToString() => val.ToString();
     }
 
-    public static ListNode ReverseList(ListNode head)
+    public class Node(int val = 0, ListNode? next = null, int? randomIndex = null) 
+        : ListNode(val, next)
+    {
+        public new Node? next { get => (Node?)base.next; set => base.next = value; }
+
+        public Node? random;
+        public int? RandomIndex = randomIndex;
+
+        public override string ToString() => $"[{val},{(object?)RandomIndex ?? "null"}]";
+
+        public static Node? BuildList(int?[][] data)
+        {
+            if (data.Length == 0) return null;
+
+            // Step 1: Create all nodes
+            Node[] nodes = new Node[data.Length];
+            for (int i = 0; i < data.Length; i++)
+            {
+                nodes[i] = new Node(data[i][0]!.Value, randomIndex: data[i][1]);
+            }
+
+            // Step 2: Link `next` and `random`
+            for (int i = 0; i < data.Length; i++)
+            {
+                if (i < data.Length - 1)
+                    nodes[i].next = nodes[i + 1];
+
+                int? randomIndex = data[i][1];
+                if (randomIndex is not null)
+                    nodes[i].random = nodes[randomIndex.Value];
+            }
+
+            return nodes[0];
+        }
+    }
+    public static ListNode? ReverseList(ListNode? head)
     {
         ListNode? prev = null;
         while (head != null)
@@ -236,8 +274,40 @@ public static class Solution
         result.next = list2 ?? list1;
         return head.next;
     }
+    public static Node? CopyRandomList(int?[][] nums)
+        => CopyRandomList(Node.BuildList(nums));
+    public static Node? CopyRandomList(Node? head)
+    {
+        Node start = head;
+        Dictionary<Node, Node> originalToCopy = [];
+        while (head != null)
+        {
+            // First line for debugging, second for submissions
+            //originalToCopy[head] = new Node(head.val, randomIndex:head.RandomIndex);
+            originalToCopy[head] = new Node(head.val);
+            head = head.next;
+        }
+        head = start;
+        while (head.next != null)
+        {
+            originalToCopy[head].next = originalToCopy[head.next];
+            if (head.random != null)
+            {
+                originalToCopy[head].random = originalToCopy[head.random];
+            }
+            head = head.next;
+        }
+        return originalToCopy[start];
+    }
 }
-
+//foreach (var item in originalToCopy)
+//{
+//    item.Value.next = originalToCopy[item.Key.next];
+//    if (item.Value.random != null)
+//    {
+//        originalToCopy[item.Value].random = head.random;
+//    }
+//}
 
 public static class Extension
 {
@@ -246,13 +316,16 @@ public static class Extension
 
     public static void PrintListNode(ListNode? l1)
     {
-        Console.Write($"[{l1?.val}");
+        Console.Write($"[{(l1 is Node n1 ? n1 : l1?.val)}");
         while (l1?.next != null)
         {
             l1 = l1.next;
-            Console.Write($",{l1.val}");
+            Console.Write($",{(l1 is Node n2 ? n2 : l1.val)}");
         }
         Console.Write("]");
         Console.WriteLine();
     }
+
+    
+
 }
