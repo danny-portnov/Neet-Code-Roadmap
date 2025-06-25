@@ -5,7 +5,9 @@ Console.WriteLine("ReverseList");
 PrintListNode(ReverseList([1, 2, 3, 4, 5]));
 PrintListNode(ReverseList([1, 2, 3]));
 PrintListNode(ReverseList([1]));
+PrintListNode(ReverseList([]));
 
+Console.WriteLine();
 Console.WriteLine("MergeTwoLists");
 PrintListNode(MergeTwoLists([1, 2, 4], [1, 3,5]));
 PrintListNode(MergeTwoLists([1, 2, 4], [1]));
@@ -13,7 +15,9 @@ PrintListNode(MergeTwoLists([1], [1]));
 PrintListNode(MergeTwoLists([], [1]));
 PrintListNode(MergeTwoLists([], []));
 
+Console.WriteLine();
 Console.WriteLine("HasCycle");
+Console.WriteLine(HasCycle([], 0)); // false
 Console.WriteLine(HasCycle([], -1)); // false
 Console.WriteLine(HasCycle([1], 0)); // true
 Console.WriteLine(HasCycle([1], -1)); // false
@@ -24,6 +28,7 @@ Console.WriteLine(HasCycle([1, 2, 3], -1)); // false
 Console.WriteLine(HasCycle([1, 2, 3, 4], 1)); // true
 Console.WriteLine(HasCycle([1, 2, 3, 4], -1)); // false
 
+Console.WriteLine();
 Console.WriteLine("ReorderList");
 PrintListNode(ReorderList([1])); // 1
 PrintListNode(ReorderList([1, 2])); // 1, 2
@@ -32,6 +37,7 @@ PrintListNode(ReorderList([1, 2, 3, 4])); // 1, 4, 2, 3
 PrintListNode(ReorderList([1, 2, 3, 4, 5])); // 1,5,2,4,3
 PrintListNode(ReorderList([1, 2, 3, 4, 5, 6, 7])); // 1,7,2,6,3,5,4
 
+Console.WriteLine();
 Console.WriteLine("RemoveNthFromEnd");
 PrintListNode(RemoveNthFromEnd([1, 2, 3, 4, 5], 2)); // [1, 2, 3, 5]
 PrintListNode(RemoveNthFromEnd([1, 2, 3, 4, 5], 5)); // [2, 3, 4, 5]
@@ -68,9 +74,9 @@ public static class Solution
         //    _count = 0;
         //}
 
-        public ListNode(int[]? values, int index = -1)
+        public ListNode(int[] values, int index = -1)
         {
-            val = (values ??= [0]).ElementAtOrDefault(0);
+            val = values[0];
 
             ListNode current = this;
             ListNode? cycleEntry = index == 0 ? this : null;
@@ -106,8 +112,8 @@ public static class Solution
         return prev;
     }
 
-    public static ListNode ReverseList(int[] nums)
-        => ReverseList(new ListNode(nums));
+    public static ListNode? ReverseList(int[] nums)
+        => ReverseList(NodeListOrNull(nums));
 
     public static bool HasCycle(ListNode? head)
     {
@@ -121,7 +127,7 @@ public static class Solution
     }
 
     public static bool HasCycle(int[] nums, int index)
-        => HasCycle(new ListNode(nums, index));
+        => HasCycle(NodeListOrNull(nums, index));
 
     public static ListNode ReorderListOnSpace(ListNode head)
     {
@@ -171,7 +177,7 @@ public static class Solution
         }
         ListNode middle = slow.next;
         slow.next = null;  // first half ends here
-        ListNode rev = ReverseList(middle);
+        ListNode? rev = ReverseList(middle);
         while (rev != null)
         {
             ListNode tmp1 = head.next, tmp2 = rev.next;
@@ -183,7 +189,7 @@ public static class Solution
         return start;
     }
 
-    public static ListNode RemoveNthFromEnd(int[] head, int n)
+    public static ListNode? RemoveNthFromEnd(int[] head, int n)
         => RemoveNthFromEnd(new ListNode(head), n);
 
     public static ListNode? RemoveNthFromEnd(ListNode head, int n)
@@ -204,7 +210,11 @@ public static class Solution
     }
 
     public static ListNode? MergeTwoLists(int[] list1, int[] list2)
-        => MergeTwoLists(new ListNode(list1), new ListNode(list2));
+        => MergeTwoLists(NodeListOrNull(list1), NodeListOrNull(list2));
+
+    private static ListNode? NodeListOrNull(int[] list, int index = -1)
+        => list.Length == 0 ? null : new ListNode(list, index);
+
     public static ListNode? MergeTwoLists(ListNode? list1, ListNode? list2)
     {
         ListNode result = new();
