@@ -49,6 +49,7 @@ PrintListNode(RemoveNthFromEnd([1,2], 2)); // [2]
 Console.WriteLine();
 Console.WriteLine("CopyRandomList");
 PrintListNode(CopyRandomList([[7, null], [13, 0], [11, 4], [10, 2], [1, 0]])); 
+PrintListNode(CopyRandomList([])); 
 
 public static class Solution
 {
@@ -286,11 +287,12 @@ public static class Solution
             head.next = new Node(head.val)
             {
                 next = temp,
+                RandomIndex = head.RandomIndex
             };
-            startCopy ??= head.next;
             head = head.next.next;
         }
         head = start;
+        startCopy = head?.next;
         while (head != null)
         {
             head.next!.random = head.random?.next;
