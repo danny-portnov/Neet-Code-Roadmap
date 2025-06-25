@@ -278,26 +278,29 @@ public static class Solution
         => CopyRandomList(Node.BuildList(nums));
     public static Node? CopyRandomList(Node? head)
     {
-        Node start = head;
+        Node? start = head;
         Dictionary<Node, Node> originalToCopy = [];
         while (head != null)
         {
             // First line for debugging, second for submissions
-            //originalToCopy[head] = new Node(head.val, randomIndex:head.RandomIndex);
-            originalToCopy[head] = new Node(head.val);
+            originalToCopy[head] = new Node(head.val, randomIndex: head.RandomIndex);
+            //originalToCopy[head] = new Node(head.val);
             head = head.next;
         }
         head = start;
-        while (head.next != null)
+        while (head != null)
         {
-            originalToCopy[head].next = originalToCopy[head.next];
+            if (head.next != null)
+            {
+                originalToCopy[head].next = originalToCopy[head.next];
+            }
             if (head.random != null)
             {
                 originalToCopy[head].random = originalToCopy[head.random];
             }
             head = head.next;
         }
-        return originalToCopy[start];
+        return start != null ? originalToCopy[start] : null;
     }
 }
 //foreach (var item in originalToCopy)
