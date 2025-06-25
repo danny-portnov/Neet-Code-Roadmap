@@ -109,7 +109,7 @@ public static class Solution
 
         public Node? random;
         public int? RandomIndex = randomIndex;
-
+        public int HashValue => GetHashCode();
         public override string ToString() => $"[{val},{(object?)RandomIndex ?? "null"}]";
 
         public static Node? BuildList(int?[][] data)
@@ -276,31 +276,34 @@ public static class Solution
     }
     public static Node? CopyRandomList(int?[][] nums)
         => CopyRandomList(Node.BuildList(nums));
+
     public static Node? CopyRandomList(Node? head)
     {
-        Node? start = head;
-        Dictionary<Node, Node> originalToCopy = [];
+        Node? start = head, startCopy = null;
         while (head != null)
         {
-            // First line for debugging, second for submissions
-            originalToCopy[head] = new Node(head.val, randomIndex: head.RandomIndex);
-            //originalToCopy[head] = new Node(head.val);
-            head = head.next;
+            Node? temp = head.next;
+            head.next = new Node(head.val)
+            {
+                next = temp,
+            };
+            startCopy ??= head.next;
+            head = head.next.next;
         }
         head = start;
         while (head != null)
         {
-            if (head.next != null)
-            {
-                originalToCopy[head].next = originalToCopy[head.next];
-            }
-            if (head.random != null)
-            {
-                originalToCopy[head].random = originalToCopy[head.random];
-            }
-            head = head.next;
+            head.next!.random = head.random?.next;
+            head = head.next.next;
         }
-        return start != null ? originalToCopy[start] : null;
+        head = start;
+        while (head != null)
+        {
+            Node? temp = head.next;
+            head.next = head.next?.next;
+            head = temp;
+        }
+        return startCopy;
     }
 }
 //foreach (var item in originalToCopy)
