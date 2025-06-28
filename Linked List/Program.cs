@@ -57,6 +57,15 @@ PrintListNode(AddTwoNumbers([2, 4, 3], [5, 6, 4])); // 7,0,8
 PrintListNode(AddTwoNumbers([0], [0])); //0
 PrintListNode(AddTwoNumbers([9, 9, 9, 9, 9, 9, 9], [9, 9, 9, 9])); // 8,9,9,9,0,0,0,1 
 
+Console.WriteLine();
+Console.WriteLine("FindDuplicate");
+Console.WriteLine(FindDuplicate([1, 2, 3, 4, 4])); // 4
+Console.WriteLine(FindDuplicate([1, 3, 4, 2, 2])); // 2
+Console.WriteLine(FindDuplicate([1, 2, 3, 2, 2])); //2
+Console.WriteLine(FindDuplicate([3, 1, 3, 4, 2])); //3
+Console.WriteLine(FindDuplicate([3, 3, 3, 3, 3])); // 3
+
+
 
 public static class Solution
 {
@@ -322,9 +331,22 @@ public static class Solution
             ? null!
             : new ListNode(sum % 10, AddTwoNumbers(l1?.next, l2?.next, sum / 10));
     }
-
     public static ListNode AddTwoNumbers(int[] l1, int[] l2)
         => AddTwoNumbers(new ListNode(l1), new ListNode(l2));
+
+    public static int FindDuplicate(int[] nums)
+    {
+        for (int i = 0; i < nums.Length; i++)
+        {
+            int absCurrVal = Math.Abs(nums[i]);
+            if (int.IsNegative(nums[absCurrVal - 1]))
+            {
+                return absCurrVal;
+            }
+            nums[absCurrVal - 1] *= -1;
+        }
+        return -1;
+    }
 }
 //foreach (var item in originalToCopy)
 //{
