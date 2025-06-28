@@ -65,6 +65,20 @@ Console.WriteLine(FindDuplicate([1, 2, 3, 2, 2])); //2
 Console.WriteLine(FindDuplicate([3, 1, 3, 4, 2])); //3
 Console.WriteLine(FindDuplicate([3, 3, 3, 3, 3])); // 3
 
+Console.WriteLine();
+Console.WriteLine("LRUCache");
+LRUCache lru = new(2); // "LRUCache" with capacity 2
+Console.WriteLine(lru.Get(2)); // get(2) => -1
+lru.Put(2, 6);           // put(2, 6)
+Console.WriteLine(lru.Get(1)); // get(1) => -1
+lru.Put(1, 5);           // put(1, 5)
+lru.Put(1, 2);           // put(1, 2)
+Console.WriteLine(lru.Get(1)); // get(1) => 5
+Console.WriteLine(lru.Get(2)); // get(1) => 6
+//lru.Put(4, 1);           // put(4, 1) -> evicts 
+//lru.Put(4, 4);           // put(4, 4) => evicts key 1
+//Console.WriteLine(lru.Get(3)); // get(3) => 3
+//Console.WriteLine(lru.Get(4)); // get(4) => 4
 
 
 public static class Solution
@@ -154,6 +168,44 @@ public static class Solution
             return nodes[0];
         }
     }
+
+    public class LRUCache(int capacity)
+    {
+        private readonly int _capacity = capacity;
+        private readonly LinkedList<(int,int)> _list = [];
+        private readonly Dictionary<int, LinkedListNode<(int Key, int Value)>> _dict 
+            = new(capacity);
+
+        public int Get(int key)
+        {
+            if (_dict.TryGetValue(key, out LinkedListNode<(int Key, int Value)>? value))
+            {
+                _list.Remove(value);
+                _list.AddLast(value);
+                return value.Value.Value;
+            }
+            return -1;
+        }
+
+        public void Put(int key, int value)
+        {
+            if (_dict.TryGetValue(key, out LinkedListNode<(int Key, int Value)>? node))
+            {
+                Get(key); // Update position
+                node.Value = (key, value); // Update node
+            }
+            else
+            {
+                if (_list.Count >= _capacity)
+                {
+                    _dict.Remove(_list.First!.Value.Item1);
+                    _list.RemoveFirst();
+                }
+                _dict[key] = _list.AddLast((key, value));
+            }
+        }
+    }
+
     public static ListNode? ReverseList(ListNode? head)
     {
         ListNode? prev = null;
