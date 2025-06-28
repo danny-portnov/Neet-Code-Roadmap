@@ -9,8 +9,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Combination Sum II", "Combi
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Number Container System", "Number Container System\Number Container System.csproj", "{7E347CF7-48C1-42B3-89FC-1416E749ABA7}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Add Two Numbers", "Add Two Numbers\Add Two Numbers.csproj", "{78DADD81-0359-4BB0-8C9D-63413B22E3AD}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Bulls and Cows", "Bulls and Cows\Bulls and Cows.csproj", "{925B2351-DA22-49DD-BEE3-5A95935BD4EA}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Encode and Decode Strings", "Encode and Decode Strings\Encode and Decode Strings.csproj", "{EB57A69E-4E3B-416A-9EC8-57862DD0B61C}"
@@ -23,9 +21,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Stack", "Stack\Stack.csproj
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Substring Matching Pattern", "Substring Matching Pattern\Substring Matching Pattern.csproj", "{90D98CCD-5DB7-4CCE-BB91-0BAE67CB5C5C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Arrays & Hashing", "Arrays & Hashing\Arrays & Hashing.csproj", "{AA36FF6B-AC10-46EE-B622-49EC8E58D6E0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Arrays & Hashing", "Arrays & Hashing\Arrays & Hashing.csproj", "{AA36FF6B-AC10-46EE-B622-49EC8E58D6E0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Top Interview Questions - Easy", "Top Interview Questions - Easy\Top Interview Questions - Easy.csproj", "{B4B61A6E-FEEC-46C6-BE77-FB060078AFF1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Top Interview Questions - Easy", "Top Interview Questions - Easy\Top Interview Questions - Easy.csproj", "{B4B61A6E-FEEC-46C6-BE77-FB060078AFF1}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -45,10 +43,6 @@ Global
 		{7E347CF7-48C1-42B3-89FC-1416E749ABA7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7E347CF7-48C1-42B3-89FC-1416E749ABA7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7E347CF7-48C1-42B3-89FC-1416E749ABA7}.Release|Any CPU.Build.0 = Release|Any CPU
-		{78DADD81-0359-4BB0-8C9D-63413B22E3AD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{78DADD81-0359-4BB0-8C9D-63413B22E3AD}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{78DADD81-0359-4BB0-8C9D-63413B22E3AD}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{78DADD81-0359-4BB0-8C9D-63413B22E3AD}.Release|Any CPU.Build.0 = Release|Any CPU
 		{925B2351-DA22-49DD-BEE3-5A95935BD4EA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{925B2351-DA22-49DD-BEE3-5A95935BD4EA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{925B2351-DA22-49DD-BEE3-5A95935BD4EA}.Release|Any CPU.ActiveCfg = Release|Any CPU
