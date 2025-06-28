@@ -178,28 +178,25 @@ public static class Solution
             = new(capacity);
 
         public int Get(int key)
-            => TryMoveNodeToEnd(key, out CacheEntry? entry)
-                ? entry.Value 
-                : -1;
+            => TryMoveNodeToEnd(key)?.Value ?? -1;
 
-        private bool TryMoveNodeToEnd(int key, out CacheEntry entry)
+        private CacheEntry? TryMoveNodeToEnd(int key)
         {
             if (_dict.TryGetValue(key, out LinkedListNode<CacheEntry>? value))
             {
                 _list.Remove(value);
                 _list.AddLast(value);
-                entry = value.Value;
-                return true;
+                return value.Value;
             }
-            entry = default;
-            return false;
+            return default;
         }
 
         public void Put(int key, int value)
         {
-            if (TryMoveNodeToEnd(key, out CacheEntry? entry))
+            CacheEntry? entry = TryMoveNodeToEnd(key);
+            if (entry != null)
             {
-                entry.Value = value; // Update node
+                entry.Value = value;
             }
             else
             {
