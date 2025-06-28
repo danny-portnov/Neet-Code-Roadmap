@@ -49,7 +49,14 @@ PrintListNode(RemoveNthFromEnd([1,2], 2)); // [2]
 Console.WriteLine();
 Console.WriteLine("CopyRandomList");
 PrintListNode(CopyRandomList([[7, null], [13, 0], [11, 4], [10, 2], [1, 0]])); 
-PrintListNode(CopyRandomList([])); 
+PrintListNode(CopyRandomList([]));
+
+Console.WriteLine();
+Console.WriteLine("AddTwoNumbers");
+PrintListNode(AddTwoNumbers([2, 4, 3], [5, 6, 4])); // 7,0,8
+PrintListNode(AddTwoNumbers([0], [0])); //0
+PrintListNode(AddTwoNumbers([9, 9, 9, 9, 9, 9, 9], [9, 9, 9, 9])); // 8,9,9,9,0,0,0,1 
+
 
 public static class Solution
 {
@@ -307,6 +314,17 @@ public static class Solution
         }
         return startCopy;
     }
+
+    public static ListNode AddTwoNumbers(ListNode l1, ListNode l2, int carry = 0)
+    {
+        int sum = (l1?.val ?? 0) + (l2?.val ?? 0) + carry;
+        return (l1, l2, carry) == (null, null, 0)
+            ? null!
+            : new ListNode(sum % 10, AddTwoNumbers(l1?.next, l2?.next, sum / 10));
+    }
+
+    public static ListNode AddTwoNumbers(int[] l1, int[] l2)
+        => AddTwoNumbers(new ListNode(l1), new ListNode(l2));
 }
 //foreach (var item in originalToCopy)
 //{
