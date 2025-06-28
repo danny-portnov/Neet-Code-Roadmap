@@ -336,16 +336,19 @@ public static class Solution
 
     public static int FindDuplicate(int[] nums)
     {
-        for (int i = 0; i < nums.Length; i++)
+        int slow = nums[0], fast = nums[nums[0]];
+        while (slow != fast)
         {
-            int absCurrVal = Math.Abs(nums[i]);
-            if (int.IsNegative(nums[absCurrVal - 1]))
-            {
-                return absCurrVal;
-            }
-            nums[absCurrVal - 1] *= -1;
+            slow = nums[slow];
+            fast = nums[nums[fast]];
         }
-        return -1;
+        slow = 0;
+        while (slow != fast)
+        {
+            slow = nums[slow];
+            fast = nums[fast];
+        }
+        return slow;
     }
 }
 //foreach (var item in originalToCopy)
