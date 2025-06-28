@@ -171,37 +171,44 @@ public static class Solution
 
     public class LRUCache(int capacity)
     {
+        class CacheEntry(int key, int value) { public int Key = key; public int Value = value; }
         private readonly int _capacity = capacity;
-        private readonly LinkedList<(int,int)> _list = [];
-        private readonly Dictionary<int, LinkedListNode<(int Key, int Value)>> _dict 
+        private readonly LinkedList<CacheEntry> _list = [];
+        private readonly Dictionary<int, LinkedListNode<CacheEntry>> _dict 
             = new(capacity);
 
         public int Get(int key)
+            => TryMoveNodeToEnd(key, out CacheEntry? entry)
+                ? entry.Value 
+                : -1;
+
+        private bool TryMoveNodeToEnd(int key, out CacheEntry entry)
         {
-            if (_dict.TryGetValue(key, out LinkedListNode<(int Key, int Value)>? value))
+            if (_dict.TryGetValue(key, out LinkedListNode<CacheEntry>? value))
             {
                 _list.Remove(value);
                 _list.AddLast(value);
-                return value.Value.Value;
+                entry = value.Value;
+                return true;
             }
-            return -1;
+            entry = default;
+            return false;
         }
 
         public void Put(int key, int value)
         {
-            if (_dict.TryGetValue(key, out LinkedListNode<(int Key, int Value)>? node))
+            if (TryMoveNodeToEnd(key, out CacheEntry? entry))
             {
-                Get(key); // Update position
-                node.Value = (key, value); // Update node
+                entry.Value = value; // Update node
             }
             else
             {
                 if (_list.Count >= _capacity)
                 {
-                    _dict.Remove(_list.First!.Value.Item1);
+                    _dict.Remove(_list.First!.Value.Key);
                     _list.RemoveFirst();
                 }
-                _dict[key] = _list.AddLast((key, value));
+                _dict[key] = _list.AddLast(new CacheEntry(key, value));
             }
         }
     }
