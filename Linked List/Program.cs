@@ -80,6 +80,17 @@ Console.WriteLine(lru.Get(2)); // get(1) => 6
 //Console.WriteLine(lru.Get(3)); // get(3) => 3
 //Console.WriteLine(lru.Get(4)); // get(4) => 4
 
+Console.WriteLine();
+Console.WriteLine("MergeKLists");
+int x = -1;
+PrintListNode(MergeKLists([[1, 4, 5], [1, 3, 4], [2, 6]])); // [1,1,2,3,4,4,5,6]
+PrintListNode(MergeKLists([[1, 2, 4], [1, 3, 5], [3, 6]])); // [1,1,2,3,3,4,5,6]
+PrintListNode(MergeKLists([[]])); // []
+PrintListNode(MergeKLists(nums: [])); // []
+//PrintListNode(PrintListNode([1, 3, 4, 2, 2])); // 2
+//PrintListNode(PrintListNode([1, 2, 3, 2, 2])); //2
+//PrintListNode(PrintListNode([3, 1, 3, 4, 2])); //3
+//PrintListNode(PrintListNode([3, 3, 3, 3, 3])); // 3
 
 public static class Solution
 {
@@ -277,6 +288,7 @@ public static class Solution
 
     public static ListNode ReorderList(int[] ints)
         => ReorderList(new ListNode(ints));
+
     public static ListNode ReorderList(ListNode head)
     {
         ListNode start = head, slow = head;
@@ -347,6 +359,7 @@ public static class Solution
         result.next = list2 ?? list1;
         return head.next;
     }
+
     public static Node? CopyRandomList(int?[][] nums)
         => CopyRandomList(Node.BuildList(nums));
 
@@ -387,6 +400,7 @@ public static class Solution
             ? null!
             : new ListNode(sum % 10, AddTwoNumbers(l1?.next, l2?.next, sum / 10));
     }
+
     public static ListNode AddTwoNumbers(int[] l1, int[] l2)
         => AddTwoNumbers(new ListNode(l1), new ListNode(l2));
 
@@ -406,15 +420,23 @@ public static class Solution
         }
         return slow;
     }
+
+    public static ListNode MergeKLists(int[][] nums)
+        => MergeKLists(nums.Select(x => NodeListOrNull(x)).ToArray());
+
+    // O(n*k)
+    public static ListNode? MergeKLists(ListNode?[] lists)
+    {
+        ListNode result = new(next: lists.FirstOrDefault()), head = result, start = result;
+        for (int i = 1; i < lists.Length; i++)
+        {
+            result.next = MergeTwoLists(start.next, lists[i]);
+            start = head;
+        }
+        return head.next;
+    }
 }
-//foreach (var item in originalToCopy)
-//{
-//    item.Value.next = originalToCopy[item.Key.next];
-//    if (item.Value.random != null)
-//    {
-//        originalToCopy[item.Value].random = head.random;
-//    }
-//}
+
 
 public static class Extension
 {
