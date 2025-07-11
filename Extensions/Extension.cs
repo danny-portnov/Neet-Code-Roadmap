@@ -5,6 +5,9 @@ public static class Extension
     public static void Print<T>(IEnumerable<T> values)
         => Console.WriteLine($"[{string.Join(",", values)}]");
 
+    public static void PrintSameLine<T>(IEnumerable<T> values)
+        => Console.Write($"[{string.Join(",", values)}]");
+
     public static void Print<T>(IList<IList<T>> lists)
         => Console.WriteLine($"[{string.Join(", ", lists.Select(inner => $"[{string.Join(", ", inner.Select(ConvertIfString))}]"))}]");
 

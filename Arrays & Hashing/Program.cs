@@ -41,8 +41,15 @@ Console.WriteLine("MajorityElement");
 Console.WriteLine(MajorityElement([3, 2, 3])); //3
 Console.WriteLine(MajorityElement([2, 2, 1, 1, 1, 2, 2])); //2
 Console.WriteLine(MajorityElement([1, 1, 1, 2, 2, 2, 2])); //2
-Console.WriteLine(MajorityElement([3, 3, 4])); //3
+Console.WriteLine(MajorityElement([3, 3, 4])); //30
 Console.WriteLine(MajorityElement([6, 5, 5])); //5
+
+Console.WriteLine("RemoveElement");
+RemoveElement([3, 2, 2, 3], 3); //2
+RemoveElement([0, 1, 2, 2, 3, 0, 4, 2], 2); //5
+RemoveElement([], 2); //0
+RemoveElement([1], 1); //0
+RemoveElement([1], 2); //1
 
 Console.WriteLine("LongestCommonPrefix");
 Print(LongestCommonPrefix(["flower", "flow", "flight"])); //"fl"
@@ -194,20 +201,17 @@ public static class Solution
 
     public static int RemoveElement(int[] nums, int val)
     {
-        int k = nums.Count(num => num != val);
-        int l = 0, r = nums.Length - 1;
-        while (l < r)
+        int k = 0;
+        for (int i = 0; i < nums.Length; i++)
         {
-            while (nums[r] == val)
+            if (nums[i] != val)
             {
-
-            }
-            if (nums[l] == val)
-            {
-
+                nums[k++] = nums[i];
             }
         }
-        return default;
+        PrintSameLine(nums);
+        Console.WriteLine($" val = {val}");
+        return k;
     }
     public static int[] SortArray(int[] nums)
     {
