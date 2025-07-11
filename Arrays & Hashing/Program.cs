@@ -69,6 +69,17 @@ myHashSet.Contains(2); // return True
 myHashSet.Remove(2);   // set = [1]
 myHashSet.Contains(2); // return False, (already removed)
 
+Console.WriteLine("MyHashMap");
+MyHashMap myHashMap = new MyHashMap();
+myHashMap.put(1, 1); // The map is now [[1,1]]
+myHashMap.put(2, 2); // The map is now [[1,1], [2,2]]
+myHashMap.get(1);    // return 1, The map is now [[1,1], [2,2]]
+myHashMap.get(3);    // return -1 (i.e., not found), The map is now [[1,1], [2,2]]
+myHashMap.put(2, 1); // The map is now [[1,1], [2,1]] (i.e., update the existing value)
+myHashMap.get(2);    // return 1, The map is now [[1,1], [2,1]]
+myHashMap.remove(2); // remove the mapping for 2, The map is now [[1,1]]
+myHashMap.get(2);    // return -1 (i.e., not found), The map is now [[1,1]]
+
 Console.WriteLine("SortArray");
 Print(SortArray([5, 2, 3, 1])); //1,2,3,4,5
 
@@ -291,4 +302,35 @@ public class MyHashSet
     public void Remove(int key) => _arr[GetHashedIndex(key)]?.Remove(key);
 
     public bool Contains(int key) => _arr[GetHashedIndex(key)]?.Contains(key) ?? false;
+}
+
+public class MyHashMap
+{
+    private record Pair(int key, int value)
+    {
+        public int Key { get; set; } = key;
+
+        public int Value { get; set; } = value;
+    }
+    const int IndexRange = 10000;
+    private readonly List<Pair>[] _arr = new List<Pair>[IndexRange];
+    private int GetHashedIndex(int key) => key % IndexRange;
+
+    public void Put(int key, int value)
+    {
+        int hashedKey = GetHashedIndex(key);
+        int index = (_arr[hashedKey] ??= []).FindIndex(x => x.Key == key);
+        if (index != -1)
+        {
+            _arr[hashedKey][index].Value = value;
+        }
+        else
+        {
+            _arr[hashedKey].Add(new Pair(key, value));
+        }
+    }
+
+    public int Get(int key) => _arr[GetHashedIndex(key)]?.Find(p => p.Key == key)?.Value ?? -1;
+
+    public void Remove(int key) => _arr[GetHashedIndex(key)]?.RemoveAll(p => p.Key == key);
 }
