@@ -1,9 +1,6 @@
 ﻿using static Solution;
-//Console.WriteLine(string.Join(", ", TwoSum([3, 2, 4], 6)));
-//Console.WriteLine(string.Join(", ", TwoSum([3, 3], 6)));
-//Console.WriteLine($"[{string.Join("x", GroupAnagrams(["eat", "tea", "tan", "ate", "nat", "bat"]).Select(x => string.Join(", ", x)))}]");
-//Console.WriteLine($"[{string.Join("x", GroupAnagramsWithGroupBy(["eat", "tea", "tan", "ate", "nat", "bat"]).Select(x => string.Join(", ", x)))}]");
-//Console.WriteLine(string.Join(", ", GroupAnagrams(["", ""])));
+
+
 //Console.WriteLine(string.Join(", ", TopKFrequent([3, 1, 1, 1, 2, 2, 4, 4, 4], 2)));
 //Console.WriteLine(string.Join(", ", TopKFrequent([-1, -1], 1)));
 //Console.WriteLine(string.Join(", ", TopKFrequent([1], 1)));
@@ -17,10 +14,6 @@
 //Console.WriteLine(LongestConsecutive([0, 0]));
 //Console.WriteLine(LongestConsecutive([]));
 //Console.WriteLine(LongestConsecutive([9, 1, 4, 7, 3, -1, 0, 5, 8, -1, 6]));
-
-//Console.WriteLine(IsPalindrome("A man, a plan, a canal: Panama"));
-//Console.WriteLine(IsPalindrome(" "));
-//Console.WriteLine(IsPalindrome("race a car"));
 
 //Console.WriteLine(string.Join(", ", TwoSum([2, 7, 11, 15], 9)));
 //Console.WriteLine(string.Join(", ", TwoSum([12, 13, 23, 28, 43, 44, 59, 60, 61, 68, 70, 86, 88, 92, 124, 125, 136, 168, 173, 173, 180, 199, 212, 221, 227, 230, 277, 282, 306, 314, 316, 321, 325, 328, 336, 337, 363, 365, 368, 370, 370, 371, 375, 384, 387, 394, 400, 404, 414, 422, 422, 427, 430, 435, 457, 493, 506, 527, 531, 538, 541, 546, 568, 583, 585, 587, 650, 652, 677, 691, 730, 737, 740, 751, 755, 764, 778, 783, 785, 789, 794, 803, 809, 815, 847, 858, 863, 863, 874, 887, 896, 916, 920, 926, 927, 930, 933, 957, 981, 997], 542)));
@@ -68,44 +61,7 @@ public static class Solution
         return true;
     }
 
-    //public static int[] TwoSum(int[] nums, int target)
-    //{
-    //    // Hash table to store number->index mapping
-    //    Dictionary<int, int> numbers = [];
 
-    //    // Iterate through the array
-    //    for (int i = 0; i < nums.Length; i++)
-    //    {
-    //        int firstNumber = nums[i];
-    //        int secondNumber = target - firstNumber;
-    //        // Check if complement (target - current number) exists in hash table
-    //        if (numbers.TryGetValue(secondNumber, out int index))
-    //        {
-    //            // If found, return indices of both numbers
-    //            return [index, i];
-    //        }
-
-    //        // Store current number and its index in hash table
-    //        numbers[firstNumber] = i;
-    //    }
-
-    //    // Return empty array if no solution found
-    //    return [];
-    //}
-
-    public static IList<IList<string>> GroupAnagrams(string[] strs)
-    {
-        Dictionary<string, IList<string>> anagrams = [];
-        foreach (string str in strs)
-        {
-            string sortedStr = Sort(str);
-            if (!anagrams.TryAdd(sortedStr, [str]))
-            {
-                anagrams[sortedStr].Add(str);
-            }
-        }
-        return [.. anagrams.Values];
-    }
 
     /// <summary>
     /// Given an integer array <paramref name="nums"/> and an integer <paramref name="k"/>,
@@ -161,27 +117,7 @@ public static class Solution
         return maxCount;
     }
 
-    /// <summary>
-    /// A phrase is a <b>palindrome</b> if, after converting all uppercase letters into 
-    /// lowercase letters and removing all non-alphanumeric characters, it reads the same forward and backward. Alphanumeric characters include letters and numbers.
-    /// Given a string <paramref name="s"/>, return <see langword="true"/> if it is a palindrome,
-    /// or <see langword="false"/> otherwise.
-    /// </summary>
-    /// <param name="s"></param>
-    /// <returns></returns>
-    public static bool IsPalindrome(string s)
-    {
-        int l = 0, r = s.Length - 1;
-        while (l <= r)
-        {
-            while (l < r && !char.IsAsciiLetterOrDigit(s[l])) l++;
-            while (l < r && !char.IsAsciiLetterOrDigit(s[r])) r--;
-            if (char.ToLower(s[r]) != char.ToLower(s[l])) return false;
-            l++;
-            r--;
-        }
-        return true;
-    }
+
 
     public static int[] TwoSum(int[] numbers, int target)
     {
@@ -256,8 +192,6 @@ public static class Solution
         return area;
     }
 
-    public static IList<IList<string>> GroupAnagramsWithGroupBy(string[] strs)
-        => strs.GroupBy(Sort).Select(x => (IList<string>)x).ToList();
 
-    static string Sort(string str) => string.Concat(str.Order());
+
 }

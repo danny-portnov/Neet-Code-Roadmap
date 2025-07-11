@@ -9,7 +9,7 @@ PrintListNode(ReverseList([]));
 
 Console.WriteLine();
 Console.WriteLine("MergeTwoLists");
-PrintListNode(MergeTwoLists([1, 2, 4], [1, 3,5]));
+PrintListNode(MergeTwoLists([1, 2, 4], [1, 3, 5]));
 PrintListNode(MergeTwoLists([1, 2, 4], [1]));
 PrintListNode(MergeTwoLists([1], [1]));
 PrintListNode(MergeTwoLists([], [1]));
@@ -21,8 +21,8 @@ Console.WriteLine(HasCycle([], 0)); // false
 Console.WriteLine(HasCycle([], -1)); // false
 Console.WriteLine(HasCycle([1], 0)); // true
 Console.WriteLine(HasCycle([1], -1)); // false
-Console.WriteLine(HasCycle([1,2], 0)); // true
-Console.WriteLine(HasCycle([1,2], -1)); // false
+Console.WriteLine(HasCycle([1, 2], 0)); // true
+Console.WriteLine(HasCycle([1, 2], -1)); // false
 Console.WriteLine(HasCycle([1, 2, 3], 1)); // true
 Console.WriteLine(HasCycle([1, 2, 3], -1)); // false
 Console.WriteLine(HasCycle([1, 2, 3, 4], 1)); // true
@@ -43,12 +43,12 @@ PrintListNode(RemoveNthFromEnd([1, 2, 3, 4, 5], 2)); // [1, 2, 3, 5]
 PrintListNode(RemoveNthFromEnd([1, 2, 3, 4, 5], 5)); // [2, 3, 4, 5]
 PrintListNode(RemoveNthFromEnd([1, 2, 3, 4, 5], 1)); // [1, 2, 3, 4]
 PrintListNode(RemoveNthFromEnd([1], 1)); // []
-PrintListNode(RemoveNthFromEnd([1,2], 1)); // [1]
-PrintListNode(RemoveNthFromEnd([1,2], 2)); // [2]
+PrintListNode(RemoveNthFromEnd([1, 2], 1)); // [1]
+PrintListNode(RemoveNthFromEnd([1, 2], 2)); // [2]
 
 Console.WriteLine();
 Console.WriteLine("CopyRandomList");
-PrintListNode(CopyRandomList([[7, null], [13, 0], [11, 4], [10, 2], [1, 0]])); 
+PrintListNode(CopyRandomList([[7, null], [13, 0], [11, 4], [10, 2], [1, 0]]));
 PrintListNode(CopyRandomList([]));
 
 Console.WriteLine();
@@ -144,7 +144,7 @@ public static class Solution
         public override string ToString() => val.ToString();
     }
 
-    public class Node(int val = 0, ListNode? next = null, int? randomIndex = null) 
+    public class Node(int val = 0, ListNode? next = null, int? randomIndex = null)
         : ListNode(val, next)
     {
         public new Node? next { get => (Node?)base.next; set => base.next = value; }
@@ -185,7 +185,7 @@ public static class Solution
         class CacheEntry(int key, int value) { public int Key = key; public int Value = value; }
         private readonly int _capacity = capacity;
         private readonly LinkedList<CacheEntry> _list = [];
-        private readonly Dictionary<int, LinkedListNode<CacheEntry>> _dict 
+        private readonly Dictionary<int, LinkedListNode<CacheEntry>> _dict
             = new(capacity);
 
         public int Get(int key)
@@ -437,12 +437,8 @@ public static class Solution
     }
 }
 
-
 public static class Extension
 {
-    public static void Print<T>(IEnumerable<T> values)
-        => Console.WriteLine($"[{string.Join(",", values)}]");
-
     public static void PrintListNode(ListNode? l1)
     {
         Console.Write($"[{(l1 is Node n1 ? n1 : l1?.val)}");
@@ -454,7 +450,4 @@ public static class Extension
         Console.Write("]");
         Console.WriteLine();
     }
-
-    
-
 }
