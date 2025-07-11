@@ -51,9 +51,23 @@ RemoveElement([], 2); //0
 RemoveElement([1], 1); //0
 RemoveElement([1], 2); //1
 
-Console.WriteLine("LongestCommonPrefix");
-Print(LongestCommonPrefix(["flower", "flow", "flight"])); //"fl"
-Print(LongestCommonPrefix(["dog", "racecar", "car"])); //""
+Console.WriteLine("MajorityElement");
+Console.WriteLine(MajorityElement([3, 2, 3])); //3
+Console.WriteLine(MajorityElement([2, 2, 1, 1, 1, 2, 2])); //2
+Console.WriteLine(MajorityElement([1, 1, 1, 2, 2, 2, 2])); //2
+Console.WriteLine(MajorityElement([3, 3, 4])); //30
+Console.WriteLine(MajorityElement([6, 5, 5])); //5
+
+Console.WriteLine("MyHashSet");
+MyHashSet myHashSet = new();
+myHashSet.Add(1);      // set = [1]
+myHashSet.Add(2);      // set = [1, 2]
+myHashSet.Contains(1); // return True
+myHashSet.Contains(3); // return False, (not found)
+myHashSet.Add(2);      // set = [1, 2]
+myHashSet.Contains(2); // return True
+myHashSet.Remove(2);   // set = [1]
+myHashSet.Contains(2); // return False, (already removed)
 
 Console.WriteLine("SortArray");
 Print(SortArray([5, 2, 3, 1])); //1,2,3,4,5
@@ -256,4 +270,18 @@ public static class Solution
             }
         }
     }
+}
+
+public class MyHashSet
+{
+    private readonly bool[] _arr = new bool[(int)Math.Pow(10, 6) + 1];
+
+    public void Add(int key)
+        => _arr[key] = true;
+
+    public void Remove(int key)
+        => _arr[key] = false;
+
+    public bool Contains(int key)
+        => _arr[key];
 }
