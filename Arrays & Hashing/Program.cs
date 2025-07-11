@@ -22,6 +22,21 @@ Print(GroupAnagrams(["eat", "tea", "aet", "aet", "ate", "ate", "nat", "bat"]));
 Print(GroupAnagrams(["", ""]));
 Print(GroupAnagrams([""]));
 
+Console.WriteLine("TopKFrequent");
+Print(TopKFrequent([3, 1, 1, 1, 2, 2, 4, 4, 4], 2)); // [1, 4]
+Print(TopKFrequent([-1, -1], 1)); // [-1]
+Print(TopKFrequent([1], 1)); // [1]
+Print(TopKFrequent([4, 1, -1, 2, -1, 2, 3], 2)); // [-1, 2]
+
+Console.WriteLine("LongestConsecutive");
+Console.WriteLine(LongestConsecutive([100, 4, 200, 1, 3, 2])); // 4 (1,2,3,4)
+Console.WriteLine(LongestConsecutive([0, 3, 7, 2, 5, 8, 4, 6, 0, 1])); //9
+Console.WriteLine(LongestConsecutive([1, 2, 0, 1])); // 3
+Console.WriteLine(LongestConsecutive([0])); //1
+Console.WriteLine(LongestConsecutive([0, 0])); // 1
+Console.WriteLine(LongestConsecutive([])); //0
+Console.WriteLine(LongestConsecutive([9, 1, 4, 7, 3, -1, 0, 5, 8, -1, 6])); //7
+
 Console.WriteLine("MajorityElement");
 Console.WriteLine(MajorityElement([3, 2, 3])); //3
 Console.WriteLine(MajorityElement([2, 2, 1, 1, 1, 2, 2])); //2
@@ -83,8 +98,62 @@ public static class Solution
         return [.. anagrams.Values];
     }
     static string Sort(string str) => string.Concat(str.Order());
+
+    /// <summary>
+    /// Given an integer array <paramref name="nums"/> and an integer <paramref name="k"/>,
+    /// return the <paramref name="k"/> most frequent elements. You may return the answer in any order.
+    /// Your algorithm's time complexity must be better than O(n log n), where n is the array's size.
+    /// </summary>
+    /// <param name="nums"></param>
+    /// <param name="k"></param>
+    /// <returns></returns>
+    public static int[] TopKFrequent(int[] nums, int k)
+    {
+        Dictionary<int, int> numToFreq = [];
+        var freqToNum = new PriorityQueue<int, int>(
+            Comparer<int>.Create((x, y) => y.CompareTo(x)));
+        foreach (var num in nums)
+        {
+            numToFreq[num] = numToFreq.GetValueOrDefault(num, 0) + 1;
+        }
+        foreach (var numToFreqPair in numToFreq)
+        {
+            freqToNum.Enqueue(numToFreqPair.Key, numToFreqPair.Value);
+        }
+        var result = new int[k];
+        for (int i = 0; i < k; i++)
+        {
+            result[i] = freqToNum.Dequeue();
+        }
+        return result;
+    }
     public static IList<IList<string>> GroupAnagramsWithGroupBy(string[] strs)
         => [.. strs.GroupBy(Sort).Select(x => (IList<string>)x)];
+
+    /// <summary>
+    /// Given an unsorted array of integers <paramref name="nums"/>, return the length of the longest consecutive elements sequence.
+    /// You must write an algorithm that runs in <c>O(n)</c> time.
+    /// </summary>
+    /// <param name="nums"></param>
+    /// <returns></returns>
+    public static int LongestConsecutive(int[] nums)
+    {
+        HashSet<int> numsUnique = [.. nums];
+        IEnumerable<int> sequenceStarters
+            = numsUnique.Where(x => !numsUnique.Contains(x - 1));
+        int maxCount = 0;
+        foreach (int num in sequenceStarters)
+        {
+            int count = 1;
+            int next = num + 1;
+            while (numsUnique.Contains(next++))
+            {
+                count++;
+            }
+            maxCount = Math.Max(maxCount, count);
+        }
+        return maxCount;
+    }
 
     public static int MajorityElement(int[] nums)
     {
