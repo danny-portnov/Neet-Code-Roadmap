@@ -62,23 +62,23 @@ Console.WriteLine("MyHashSet");
 MyHashSet myHashSet = new();
 myHashSet.Add(1);      // set = [1]
 myHashSet.Add(2);      // set = [1, 2]
-myHashSet.Contains(1); // return True
-myHashSet.Contains(3); // return False, (not found)
+Console.WriteLine(myHashSet.Contains(1)); // return True
+Console.WriteLine(myHashSet.Contains(3)); // return False, (not found)
 myHashSet.Add(2);      // set = [1, 2]
-myHashSet.Contains(2); // return True
+Console.WriteLine(myHashSet.Contains(2)); // return True
 myHashSet.Remove(2);   // set = [1]
-myHashSet.Contains(2); // return False, (already removed)
+Console.WriteLine(myHashSet.Contains(2)); // return False, (already removed)
 
 Console.WriteLine("MyHashMap");
 MyHashMap myHashMap = new MyHashMap();
-myHashMap.put(1, 1); // The map is now [[1,1]]
-myHashMap.put(2, 2); // The map is now [[1,1], [2,2]]
-myHashMap.get(1);    // return 1, The map is now [[1,1], [2,2]]
-myHashMap.get(3);    // return -1 (i.e., not found), The map is now [[1,1], [2,2]]
-myHashMap.put(2, 1); // The map is now [[1,1], [2,1]] (i.e., update the existing value)
-myHashMap.get(2);    // return 1, The map is now [[1,1], [2,1]]
-myHashMap.remove(2); // remove the mapping for 2, The map is now [[1,1]]
-myHashMap.get(2);    // return -1 (i.e., not found), The map is now [[1,1]]
+myHashMap.Put(1, 1); // The map is now [[1,1]]
+myHashMap.Put(2, 2); // The map is now [[1,1], [2,2]]
+Console.WriteLine(myHashMap.Get(1));    // return 1, The map is now [[1,1], [2,2]]
+Console.WriteLine(myHashMap.Get(3));    // return -1 (i.e., not found), The map is now [[1,1], [2,2]]
+myHashMap.Put(2, 1); // The map is now [[1,1], [2,1]] (i.e., update the existing value)
+Console.WriteLine(myHashMap.Get(2));    // return 1, The map is now [[1,1], [2,1]]
+myHashMap.Remove(2); // remove the mapping for 2, The map is now [[1,1]]
+Console.WriteLine(myHashMap.Get(2));    // return -1 (i.e., not found), The map is now [[1,1]]
 
 Console.WriteLine("SortArray");
 Print(SortArray([5, 2, 3, 1])); //1,2,3,4,5
