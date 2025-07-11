@@ -274,14 +274,21 @@ public static class Solution
 
 public class MyHashSet
 {
-    private readonly bool[] _arr = new bool[(int)Math.Pow(10, 6) + 1];
+    const int IndexRange = 1000;
+    private readonly List<int>[] _arr = new List<int>[IndexRange];
+    private int GetHashedIndex(int key) => key % IndexRange;
 
     public void Add(int key)
-        => _arr[key] = true;
+    {
+        int hashedKey = GetHashedIndex(key);
+        _arr[hashedKey] ??= []; // lazy init
+        if (!_arr[hashedKey].Contains(key))
+        {
+            _arr[hashedKey].Add(key);
+        }
+    }
 
-    public void Remove(int key)
-        => _arr[key] = false;
+    public void Remove(int key) => _arr[GetHashedIndex(key)]?.Remove(key);
 
-    public bool Contains(int key)
-        => _arr[key];
+    public bool Contains(int key) => _arr[GetHashedIndex(key)]?.Contains(key) ?? false;
 }
