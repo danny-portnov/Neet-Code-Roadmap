@@ -255,28 +255,26 @@ public static class Solution
 
     public static int[] SortColors(int[] nums)
     {
-        int l = 0, r = nums.Length - 1;
-        for (int i = 0; i <= r; i++)
+        int i = 0, l = 0, r = nums.Length - 1;
+        while (i <= r)
         {
-            // First advance right pointer to first non-2 element 
-            // This guarantees that when swapping, you won't swap with a 2
-            // Thus leaving all the 2's on the right
-            while (r > 0 && nums[r] == 2) r--;
-            // If you've crossed i, everything is sorted :)
-            if (i > r) return nums;
-            // Second check for 2 and swap
-            if (nums[i] == 2)
+            switch (nums[i])
             {
-                (nums[i], nums[r]) = (nums[r], nums[i]);
-                r--;
+                case 0:
+                    (nums[i], nums[l]) = (nums[l], nums[i]);
+                    l++;
+                    break;
+                case 2:
+                    (nums[i], nums[r]) = (nums[r], nums[i]);
+                    r--;
+                    i--;
+                    // We keep i in place when moving r for 2 reasons:
+                    // 1) if we've swapped with a 0, in the next iteration move to the left
+                    // 2) If we've swapped with a 2, in the next iteration swap it back with the current element at r
+                    // [2,1,2] -> [2,1,2] (2 and 2 swapped but i didn't move) -> [1,2,2] (1 and 2 swapped!)
+                    break;
             }
-            // Third check if you've swapped with a 0!
-            // If so, move to the left
-            if (nums[i] == 0)
-            {
-                (nums[i], nums[l]) = (nums[l], nums[i]);
-                l++;
-            }
+            i++;
         }
         return nums;
     }
