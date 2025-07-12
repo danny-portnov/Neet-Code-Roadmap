@@ -83,6 +83,20 @@ Console.WriteLine(myHashMap.Get(2));    // return -1 (i.e., not found), The map 
 Console.WriteLine("SortArray");
 Print(SortArray([5, 2, 3, 1])); //1,2,3,4,5
 
+Console.WriteLine("SortColors");
+Print(SortColors([2, 0, 2, 1, 1, 0])); // [0,0,1,1,2,2]
+Print(SortColors([2, 0, 1])); // [0,1,2]
+Print(SortColors([1, 0, 1, 2])); // [0,1,1,2]
+Print(SortColors([0, 1, 2, 1, 0, 2])); // [0,0,1,1,2,2]
+Print(SortColors([0])); // [0]
+Print(SortColors([1])); // [1]
+Print(SortColors([2])); // [2]
+Print(SortColors([0, 1])); // [0,1]
+Print(SortColors([0, 2])); // [0,2]
+Print(SortColors([2, 1])); // [1,2]
+Print(SortColors([2, 0])); // [0,2]
+Print(SortColors([2, 1, 2])); // [1,2,2]
+Print(SortColors([2, 2, 0])); // [0,2,2]
 public static class Solution
 {
     public static bool HasDuplicate(int[] nums)
@@ -237,6 +251,34 @@ public static class Solution
         PrintSameLine(nums);
         Console.WriteLine($" val = {val}");
         return k;
+    }
+
+    public static int[] SortColors(int[] nums)
+    {
+        int l = 0, r = nums.Length - 1;
+        for (int i = 0; i <= r; i++)
+        {
+            // First advance right pointer to first non-2 element 
+            // This guarantees that when swapping, you won't swap with a 2
+            // Thus leaving all the 2's on the right
+            while (r > 0 && nums[r] == 2) r--;
+            // If you've crossed i, everything is sorted :)
+            if (i > r) return nums;
+            // Second check for 2 and swap
+            if (nums[i] == 2)
+            {
+                (nums[i], nums[r]) = (nums[r], nums[i]);
+                r--;
+            }
+            // Third check if you've swapped with a 0!
+            // If so, move to the left
+            if (nums[i] == 0)
+            {
+                (nums[i], nums[l]) = (nums[l], nums[i]);
+                l++;
+            }
+        }
+        return nums;
     }
     public static int[] SortArray(int[] nums)
     {
