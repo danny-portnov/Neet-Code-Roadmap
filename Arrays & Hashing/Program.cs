@@ -97,6 +97,11 @@ Print(SortColors([2, 1])); // [1,2]
 Print(SortColors([2, 0])); // [0,2]
 Print(SortColors([2, 1, 2])); // [1,2,2]
 Print(SortColors([2, 2, 0])); // [0,2,2]
+
+Console.WriteLine("MaxProfit");
+Console.WriteLine(MaxProfit([7, 1, 5, 3, 6, 4])); //  = (5-1 = 4) + ( 6-3 = 3) = 7.
+Console.WriteLine(MaxProfit([1, 2, 3, 4, 5])); // 5 - 1 = 4
+Console.WriteLine(MaxProfit([7, 6, 4, 3, 1])); // 0
 public static class Solution
 {
     public static bool HasDuplicate(int[] nums)
@@ -130,6 +135,7 @@ public static class Solution
         }
         return [];
     }
+
     public static IList<IList<string>> GroupAnagrams(string[] strs)
     {
         Dictionary<string, IList<string>> anagrams = [];
@@ -143,6 +149,7 @@ public static class Solution
         }
         return [.. anagrams.Values];
     }
+
     static string Sort(string str) => string.Concat(str.Order());
 
     /// <summary>
@@ -278,6 +285,7 @@ public static class Solution
         }
         return nums;
     }
+
     public static int[] SortArray(int[] nums)
     {
         MergeSort(nums, 0, nums.Length - 1);
@@ -320,6 +328,30 @@ public static class Solution
                 arr[i++] = right[k++];
             }
         }
+    }
+
+    public static int MaxProfit(int[] prices)
+    {
+        bool sell = false;
+        int profit = 0, priceBought = 0;
+        for (int i = 0; i < prices.Length - 1; i++)
+        {
+            if (prices[i] > prices[i + 1] && sell)
+            {
+                sell = false;
+                profit += prices[i] - priceBought;
+            }
+            if (prices[i] < prices[i + 1] && !sell)
+            {
+                sell = true;
+                priceBought = prices[i];
+            }
+        }
+        if (sell)
+        {
+            profit += prices.Last() - priceBought;
+        }
+        return profit;
     }
 }
 
