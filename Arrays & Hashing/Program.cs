@@ -332,26 +332,25 @@ public static class Solution
 
     public static int MaxProfit(int[] prices)
     {
-        bool sell = false;
-        int profit = 0, priceBought = 0;
-        for (int i = 0; i < prices.Length - 1; i++)
+        int profit = 0;
+        for (int i = 1; i < prices.Length; i++)
         {
-            if (prices[i] > prices[i + 1] && sell)
+            if (prices[i] > prices[i - 1])
             {
-                sell = false;
-                profit += prices[i] - priceBought;
+                profit += prices[i] - prices[i - 1];
             }
-            if (prices[i] < prices[i + 1] && !sell)
-            {
-                sell = true;
-                priceBought = prices[i];
-            }
-        }
-        if (sell)
-        {
-            profit += prices.Last() - priceBought;
         }
         return profit;
+    }
+
+    public static IList<int> MajorityElementII(int[] nums)
+    {
+        List<int> result = [];
+        int threshold = nums.Length / 3;
+        foreach (var item in nums)
+        {
+
+        }
     }
 }
 
