@@ -115,9 +115,9 @@ class Solution:
         A consecutive sequence is a sequence of elements in which each element is exactly 1 greater than the previous element
         The elements do not have to be consecutive in the original array.
         """
-        hist: dict[int, int] = self.createHist(nums)
+        hist: set[int] = set(nums)
         maxCount = 0
-        sequenceStarters: set[int] = set(filter(lambda x: x - 1 not in hist, nums))
+        sequenceStarters = filter(lambda x: x - 1 not in hist, hist)
         for x in sequenceStarters:
             count = 0
             while x in hist:
