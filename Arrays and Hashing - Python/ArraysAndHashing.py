@@ -1,6 +1,6 @@
 
 from collections import defaultdict
-from typing import List
+from typing import List, Union
 
 
 class Solution:
@@ -20,7 +20,7 @@ class Solution:
     def isAnagram(self, s: str, t: str) -> bool:
         return self.createHist(t) == self.createHist(s)
 
-    def createHist(self, s: str) -> dict[str, int]:
+    def createHist(self, s: Union[str, int]) -> dict[Union[str, int], int]:
         hist = {}
         for c in s:
             hist[c] = hist.get(c, 0) + 1
@@ -75,7 +75,7 @@ class Solution:
         freqHist: dict[int, List[int]] = defaultdict(list)
         result: List[List[int]] = [[]] * len(
             nums
-        )  # Creat a bucket for each possible frequency, 1 -> nums' length
+        )  # Create a bucket for each possible frequency, 1 -> nums' length
         for num in nums:
             hist[num] += 1
         for num in hist:
@@ -85,6 +85,49 @@ class Solution:
         return [num for sublist in result if len(sublist) != 0 for num in sublist][
             -k:
         ]  # Return last greater than zero k elements
+
+    # Design an algorithm to encode a list of strings to a string.
+    # The encoded string is then sent over the network
+    # and is decoded back to the original list of strings.
+
+    def encode(self, strs: List[str]) -> str:
+        string: str = ""
+        for s in strs:
+            string += f"{len(s)}:{s}"
+        return string
+
+    def decode(self, s: str) -> List[str]:
+        result: List[str] = []
+        i = 0  # Index in 's'
+        while i < len(s):
+            end = s.find(":", i)
+            curr = int(s[i:end])
+            # Length of expected next string, could be double digit
+            result.append(s[end + 1 : end + 1 + curr])
+            # String starts after the length specified till last char
+            i = end + 1 + curr
+            # Move 'i' to the NEXT length expected (the first char AFTER the last string)
+        return result
+
+    def longestConsecutive(self, nums: List[int]) -> int:
+        """
+        Given an array of integers nums, return the length of the longest consecutive sequence of elements that can be formed.
+        A consecutive sequence is a sequence of elements in which each element is exactly 1 greater than the previous element
+        The elements do not have to be consecutive in the original array.
+        """
+        hist: dict[int, int] = self.createHist(nums)
+        sequenceStarters: set[int] = set()
+        maxCount = 0
+        for num in nums:
+            if num - 1 not in hist:
+                sequenceStarters.add(num)
+        for x in sequenceStarters:
+            count = 0
+            while x in hist:
+                count += 1
+                x += 1
+            maxCount = max(maxCount, count)
+        return maxCount
 
 
 solution = Solution()
@@ -103,3 +146,12 @@ print(solution.topKFrequent(nums=[1, 2, 2, 3, 3, 3], k=1))  # [3]
 print(solution.topKFrequent(nums=[1, 2, 2, 2, 3, 3, 3], k=2))  # [2,3]
 print(solution.topKFrequent(nums=[1, 2, 1, 2, 1, 2, 3, 1, 3, 2], k=2))  # [1,2]
 print(solution.topKFrequent(nums=[7, 7], k=1))  # [7]
+strs = [["Hello", "World"], ["we", "say", ":", "yes", "!@#$%^&*()"]]
+for x in strs:
+    encoder = solution.encode(x)
+    print(f"{x} -> {encoder} -> {solution.decode(encoder)}")
+print(solution.longestConsecutive([2, 20, 4, 10, 3, 4, 5]))  # 4
+print(solution.longestConsecutive([0, 3, 2, 5, 4, 6, 1, 1]))  # 7
+
+# ["Hello","World"] -> 5Hello5World -> ["Hello","World"]
+# ["we","say",":","yes","!@#$%^&*()"] -> 2we3say1:3yes10!@#$%^&*() ->["we","say",":","yes","!@#$%^&*()"]

@@ -1,10 +1,25 @@
 ﻿using static Solution;
 using static Extensions.Extension;
 
+Console.WriteLine("ReverseString");
+Print(ReverseString(['n', 'e', 'e', 't'])); // ["t","e","e","n"]
+Print(ReverseString(['r', 'a', 'c', 'e', 'c', 'a', 'r'])); //["r", "a", "c", "e", "c", "a", "r"]
+
 Console.WriteLine("IsPalindrome");
 Console.WriteLine(IsPalindrome("A man, a plan, a canal: Panama"));
 Console.WriteLine(IsPalindrome(" "));
 Console.WriteLine(IsPalindrome("race a car"));
+
+//Console.WriteLine("ValidPalindrome");
+//Console.WriteLine(ValidPalindrome("aba")); // true
+//Console.WriteLine(ValidPalindrome(" ")); // true
+//Console.WriteLine(ValidPalindrome("abc")); // false
+//Console.WriteLine(ValidPalindrome("abca")); // true
+
+Console.WriteLine("MergeAlternately");
+Console.WriteLine(MergeAlternately("abc", "pqr")); // apbqcr
+Console.WriteLine(MergeAlternately("ab", "pqrs")); // apbqrs
+Console.WriteLine(MergeAlternately("abcd", "pq")); // apbqcd
 
 Console.WriteLine("TwoSum");
 Print(TwoSum([2, 7, 11, 15], 9)); // [1,2]
@@ -24,6 +39,17 @@ Console.WriteLine("MaxArea");
 Console.WriteLine(MaxArea([1, 8, 6, 2, 5, 4, 8, 3, 7])); // 49
 public static class Solution
 {
+    public static char[] ReverseString(char[] s)
+    {
+        int l = 0, r = s.Length - 1;
+        while (l < r)
+        {
+            (s[l], s[r]) = (s[r], s[l]);
+            l++;
+            r--;
+        }
+        return s;
+    }
 
     /// <summary>
     /// A phrase is a <b>palindrome</b> if, after converting all uppercase letters into 
@@ -47,6 +73,51 @@ public static class Solution
         return true;
     }
 
+    public static bool ValidPalindrome(string s)
+    {
+        int l = 0, r = s.Length - 1;
+        bool skipped = false;
+        while (l < r)
+        {
+            if (s[r] != s[l])
+            {
+                if (skipped) return false;
+                //if (s[r-1] != s[l]) 
+            }
+            l++;
+            r--;
+        }
+        return true;
+    }
+
+    public static string MergeAlternately(string word1, string word2)
+    {
+        var word = new char[word1.Length + word2.Length];
+        int w1 = 0, w2 = 0;
+        for (int i = 0; i < word.Length; i++)
+        {
+            if (i >= word1.Length && i < word2.Length)
+            {
+                word[i] = word2[w2];
+                w2++;
+            }
+            else
+            {
+                if (int.IsEvenInteger(i))
+                {
+                    word[i] = word1[w1];
+                    w1++;
+                }
+                else
+                {
+                    word[i] = word2[w2];
+                    w2++;
+                }
+            }
+
+        }
+        return new string(word);
+    }
     public static int[] TwoSum(int[] numbers, int target)
     {
         int l = 0, r = numbers.Length - 1;
