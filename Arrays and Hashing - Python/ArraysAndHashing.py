@@ -116,11 +116,8 @@ class Solution:
         The elements do not have to be consecutive in the original array.
         """
         hist: dict[int, int] = self.createHist(nums)
-        sequenceStarters: set[int] = set()
         maxCount = 0
-        for num in nums:
-            if num - 1 not in hist:
-                sequenceStarters.add(num)
+        sequenceStarters: set[int] = set(filter(lambda x: x - 1 not in hist, nums))
         for x in sequenceStarters:
             count = 0
             while x in hist:
