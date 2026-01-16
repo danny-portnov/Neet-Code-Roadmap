@@ -27,6 +27,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Two Pointers", "Two Pointer
 EndProject
 Project("{888888A0-9F3D-457C-B088-3A5042F75D52}") = "Arrays and Hashing - Python", "Arrays and Hashing - Python\Arrays and Hashing - Python.pyproj", "{F64B176D-AC58-425E-8CCF-628773929C07}"
 EndProject
+Project("{888888A0-9F3D-457C-B088-3A5042F75D52}") = "Two Pointers - Python", "Two Pointers - Python\Two Pointers - Python.pyproj", "{899C36F5-1429-4ECA-9DF2-0745D2F75687}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -79,6 +81,8 @@ Global
 		{128B44BF-6D5C-4FCF-9795-D4C2203EF445}.Release|Any CPU.Build.0 = Release|Any CPU
 		{F64B176D-AC58-425E-8CCF-628773929C07}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{F64B176D-AC58-425E-8CCF-628773929C07}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{899C36F5-1429-4ECA-9DF2-0745D2F75687}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{899C36F5-1429-4ECA-9DF2-0745D2F75687}.Release|Any CPU.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
