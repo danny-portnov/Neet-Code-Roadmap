@@ -53,6 +53,12 @@ class Solution:
     # An anagram is a string that contains
     # the exact same characters as another string, but the order of the characters can be different.
     def groupAnagrams(self, strs: List[str]) -> List[List[str]]:
+        """
+        Given an array of strings strs, group all anagrams
+        together into sublists. You may return the output in any order.
+        An anagram is a string that contains
+        the exact same characters as another string, but the order of the characters can be different.
+        """
         result: dict[tuple[int, ...], List[str]] = defaultdict(
             list
         )  # Creates an empty list for each key inserted
@@ -60,6 +66,25 @@ class Solution:
             hist = self.createHistTuple(s)
             result[hist].append(s)
         return list(result.values())
+
+    def topKFrequent(self, nums: List[int], k: int) -> List[int]:
+        """
+        Given an integer array nums and an integer k, return the k most frequent elements. You may return the answer in any order.
+        """
+        hist: dict[int, int] = defaultdict(int)
+        freqHist: dict[int, List[int]] = defaultdict(list)
+        result: List[List[int]] = [[]] * len(
+            nums
+        )  # Creat a bucket for each possible frequency, 1 -> nums' length
+        for num in nums:
+            hist[num] += 1
+        for num in hist:
+            freqHist[hist[num]].append(num)
+        for freq in freqHist:
+            result[freq - 1] = freqHist[freq]  # Assign to each frequency its number*S*
+        return [num for sublist in result if len(sublist) != 0 for num in sublist][
+            -k:
+        ]  # Return last greater than zero k elements
 
 
 solution = Solution()
@@ -73,3 +98,8 @@ print(solution.isAnagram(s="xx", t="x"))  # False
 print(
     solution.groupAnagrams(strs=["act", "pots", "tops", "cat", "stop", "hat"])
 )  # [["hat"],["act", "cat"],["stop", "pots", "tops"]]
+print(solution.topKFrequent(nums=[1, 2, 2, 3, 3, 3], k=2))  # [2,3]
+print(solution.topKFrequent(nums=[1, 2, 2, 3, 3, 3], k=1))  # [3]
+print(solution.topKFrequent(nums=[1, 2, 2, 2, 3, 3, 3], k=2))  # [2,3]
+print(solution.topKFrequent(nums=[1, 2, 1, 2, 1, 2, 3, 1, 3, 2], k=2))  # [1,2]
+print(solution.topKFrequent(nums=[7, 7], k=1))  # [7]
