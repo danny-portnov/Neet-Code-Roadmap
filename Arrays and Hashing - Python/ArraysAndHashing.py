@@ -131,22 +131,27 @@ solution = Solution()
 print("hasDuplicate")
 print(solution.hasDuplicate([1, 2, 3, 1]))  # True
 print(solution.hasDuplicate([1, 2, 3, 4]))  # False
+print("isAnagram")
 print(solution.isAnagram(s="racecar", t="carrace"))  # True
 print(solution.isAnagram(s="jar", t="jam"))  # False
 print(solution.isAnagram(s="xx", t="x"))  # False
 print(solution.isAnagram(s="xx", t="x"))  # False
+print("groupAnagrams")
 print(
     solution.groupAnagrams(strs=["act", "pots", "tops", "cat", "stop", "hat"])
 )  # [["hat"],["act", "cat"],["stop", "pots", "tops"]]
+print("topKFrequent")
 print(solution.topKFrequent(nums=[1, 2, 2, 3, 3, 3], k=2))  # [2,3]
 print(solution.topKFrequent(nums=[1, 2, 2, 3, 3, 3], k=1))  # [3]
 print(solution.topKFrequent(nums=[1, 2, 2, 2, 3, 3, 3], k=2))  # [2,3]
 print(solution.topKFrequent(nums=[1, 2, 1, 2, 1, 2, 3, 1, 3, 2], k=2))  # [1,2]
 print(solution.topKFrequent(nums=[7, 7], k=1))  # [7]
+print("encode decode strings")
 strs = [["Hello", "World"], ["we", "say", ":", "yes", "!@#$%^&*()"]]
 for x in strs:
     encoder = solution.encode(x)
     print(f"{x} -> {encoder} -> {solution.decode(encoder)}")
+print("longestConsecutive")
 print(solution.longestConsecutive([2, 20, 4, 10, 3, 4, 5]))  # 4
 print(solution.longestConsecutive([0, 3, 2, 5, 4, 6, 1, 1]))  # 7
 
