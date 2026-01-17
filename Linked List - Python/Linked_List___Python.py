@@ -34,12 +34,20 @@ class ListNode:
             current = current.next
         return "[" + ", ".join(nodes) + "]"
 
+    def __repr__(self):
+        return self.__str__()
+
 
 class Solution:
 
     def reverseList(self, head: Optional[ListNode]) -> Optional[ListNode]:
-
-        return head
+        curr = None
+        while head:
+            nextNode = head.next
+            head.next = curr
+            curr = head
+            head = nextNode
+        return curr
 
 
 class SolutionFromList:
