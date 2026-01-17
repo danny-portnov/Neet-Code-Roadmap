@@ -49,6 +49,20 @@ class Solution:
             head = nextNode
         return curr
 
+    def mergeTwoLists(
+        self, list1: Optional[ListNode], list2: Optional[ListNode]
+    ) -> Optional[ListNode]:
+        dummy = head = ListNode()
+        while list1 or list2:
+            if list1 and (not list2 or list1.val < list2.val):
+                head.next = list1
+                list1 = list1.next
+            else:
+                head.next = list2
+                list2 = list2.next
+            head = head.next
+        return dummy.next
+
 
 class SolutionFromList:
     def __init__(self):
@@ -57,7 +71,20 @@ class SolutionFromList:
     def reverseList(self, head: Optional[list[int]]) -> Optional[list[int]]:
         return self.sol.reverseList(ListNode.from_list(head))
 
+    def mergeTwoLists(
+        self, list1: Optional[ListNode], list2: Optional[ListNode]
+    ) -> Optional[ListNode]:
+        return self.sol.mergeTwoLists(
+            ListNode.from_list(list1), ListNode.from_list(list2)
+        )
+
 
 solution = SolutionFromList()
 print("reverseList")
 print(solution.reverseList([0, 1, 2, 3]))  # [3,2,1,0]
+print("mergeTwoLists")
+print(solution.mergeTwoLists(list1=[1, 2, 4], list2=[1, 3, 5]))  #  [1,1,2,3,4,5]
+print(solution.mergeTwoLists(list1=[1, 3, 5], list2=[1, 2, 4]))  #  [1,1,2,3,4,5]
+print(solution.mergeTwoLists(list1=[], list2=[1, 2]))  #  [1,2]
+print(solution.mergeTwoLists(list1=[1, 2], list2=[]))  #  [1,2]
+print(solution.mergeTwoLists(list1=[], list2=[]))  #  []
