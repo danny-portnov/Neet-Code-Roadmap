@@ -25,9 +25,9 @@ class Solution:
             targetSum = numbers[r] + numbers[l]
             if targetSum < target:
                 r += 1
-            if targetSum > target:
+            elif targetSum > target:
                 l -= 1
-            if targetSum == target:
+            else:  # Target found
                 return [r + 1, l + 1]
 
 
