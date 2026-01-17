@@ -30,6 +30,18 @@ class Solution:
             else:  # Target found
                 return [r + 1, l + 1]
 
+    def maxArea(self, heights: list[int]) -> int:
+
+        (r, l) = 0, len(heights) - 1
+        maxArea = 0
+        while r < l:
+            maxArea = max(min(heights[r], heights[l]) * (l - r), maxArea)
+            if heights[l] < heights[r]:
+                l -= 1
+            else:
+                r += 1
+        return maxArea
+
 
 solution = Solution()
 print("isPalindrome")
@@ -41,3 +53,7 @@ print(solution.twoSum([2, 7, 11, 15], target=9))  # [1,2]
 print(solution.twoSum([2, 3, 4], target=6))  # [1,3]
 print(solution.twoSum([-1, 0], target=-1))  # [1,2]
 print(solution.twoSum([1, 2, 3, 4], target=3))  # [1,2]
+print("maxArea")
+print(solution.maxArea([1, 7, 2, 5, 4, 7, 3, 6]))  # 36
+print(solution.maxArea([2, 2, 2]))  # 4
+print(solution.maxArea([1, 7, 2, 5, 12, 3, 500, 500, 7, 8, 4, 7, 3, 6]))  # 500
